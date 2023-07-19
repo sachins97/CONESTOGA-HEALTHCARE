@@ -1,0 +1,51 @@
+.manage-appointment {
+    margin: 20px;
+  }
+  
+  .manage-appointment h1 {
+    font-size: 50px;
+    margin-bottom: 10px;
+  }
+  
+  .manage-appointment .options {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+  }
+  
+  .manage-appointment .options button {
+    margin-right: 10px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 40px;
+  }
+  
+  .manage-appointment .options button:hover {
+    background-color: #0056b3;
+  }
+  
+  .manage-appointment table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .manage-appointment th,
+  .manage-appointment td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .manage-appointment th {
+    background-color: #f9f9f9;
+    font-weight: bold;
+  }
+  
+  .manage-appointment td button {
+    margin-right: 5px;
+  }
+  
