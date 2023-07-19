@@ -44,6 +44,37 @@ app.post('/DoctorLogin', (req, res) => {
     });
 });
 
+//----------------------------ADMIN LOGIN-------------
+
+app.post('/AdminLogin', (req, res) => {
+  let username = req.body.username;
+  let password = req.body.password;
+
+  sql.connect(config)
+    .then(() => {
+      return sql.query`SELECT AdminId FROM Admins WHERE username = ${username} AND password = ${password}`; // Replace Doctor with the actual table name
+    })
+    .then((result) => {
+      if (result.recordset.length === 0) {
+        res.send('Login Failed');
+      } else if (result.recordset.length === 1) {
+        res.send('Login Successful');
+      } else {
+        res.send('Multiple users found with the same credentials');
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    })
+    .finally(() => {
+      sql.close();
+    });
+});
+
+
+
+
 app.post('/alogin', (req, res) => {
   let username = req.body.username;
   let password = req.body.password;

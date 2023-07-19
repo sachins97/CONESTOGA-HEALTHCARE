@@ -1,8 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './optionspage.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const DoctorPage = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear user session or token from local storage
+    localStorage.removeItem('userToken');
+
+    // Redirect the user to the login page
+    navigate('/Doctor');
+  };
+
+  useEffect(() => {
+    // Check if the user is logged in
+    const userToken = localStorage.getItem('userToken');
+    if (!userToken) {
+      // Redirect to the login page if not logged in
+      navigate('/Doctor');
+    }
+  }, [navigate]);
+
+  // Redirect to login if session is not valid
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const userToken = localStorage.getItem('userToken');
+      if (!userToken) {
+        navigate('/Doctor');
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [navigate]);
+
   return (
     <div className="doctor-page-container">
       <h1>Doctor</h1>
@@ -20,6 +51,8 @@ const DoctorPage = () => {
           <button className="btn">Other Option</button>
         </div>
       </div>
+      <button className="logout-btn" onClick={handleLogout}>Logout</button>
+  
     </div>
   );
 };
