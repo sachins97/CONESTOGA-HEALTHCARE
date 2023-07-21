@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './PatientRegistration.css';
+import Header from './Header';
+import Footer from './Footer';
 
 const RegisterPatient = () => {
   const [name, setName] = useState('');
@@ -23,6 +25,8 @@ const RegisterPatient = () => {
 
   return (
     <div>
+      <Header />
+
       <h1>Register Patient</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Name:</label>
@@ -83,9 +87,10 @@ const RegisterPatient = () => {
           required
         />
 
-
         <button type="submit">Register</button>
       </form>
+
+      <Footer />
     </div>
   );
 };

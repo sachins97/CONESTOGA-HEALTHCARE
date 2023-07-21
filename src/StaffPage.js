@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import './optionspage.css';
 import { Link, useNavigate } from 'react-router-dom';
-
+import Header from './Header';
+import Footer from './Footer';
 const StaffPage = () => {
   const navigate = useNavigate();
 
@@ -36,29 +37,41 @@ const StaffPage = () => {
 
   return (
     <div className="staff-page-container">
+      <Header />
       <h1>Staff</h1>
 
       <div className="options-container">
         <div className="option">
           <h2>Book An Appointment</h2>
           <p>Use this option to book an appointment for a patient.</p>
-          <button className="btn"><Link to="/app">Book Appointments</Link></button>
+          <button className="btn">
+            <Link to="/app">Book Appointments</Link>
+          </button>
         </div>
 
         <div className="option">
           <h2>Manage Appointment</h2>
           <p>Use this option to manage existing appointments.</p>
-          <button className="btn"><Link to="/ManageAppointment">Manage Appointments</Link></button>
+          <button className="btn">
+            <Link to="/ManageAppointment">Manage Appointments</Link>
+          </button>
         </div>
 
         <div className="option">
           <h2>Register Patient</h2>
-          <p>Use this option to register a new patient with medical background.</p>
-          <button className="btn"><Link to="/PatientRegistration">Register Patient</Link></button>
+          <p>
+            Use this option to register a new patient with medical background.
+          </p>
+          <button className="btn">
+            <Link to="/PatientRegistration">Register Patient</Link>
+          </button>
         </div>
       </div>
 
-      <button className="logout-btn" onClick={handleLogout}>Logout</button>
+      <button className="logout-btn" onClick={handleLogout}>
+        Logout
+      </button>
+      <Footer />
     </div>
   );
 };

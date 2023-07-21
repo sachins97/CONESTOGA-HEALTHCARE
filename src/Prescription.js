@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './Prescription.css';
+import Header from './Header';
+import Footer from './Footer';
 
 const medicineNames = [
   'Aspirin',
@@ -79,6 +81,7 @@ const AddPrescription = () => {
 
   return (
     <div className="container">
+      <Header />
       <h1>Add Prescription</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="patient-name">Patient Name:</label>
@@ -150,6 +153,7 @@ const AddPrescription = () => {
 
         <button type="submit">Add Prescription</button>
       </form>
+      <Footer />
     </div>
   );
 };

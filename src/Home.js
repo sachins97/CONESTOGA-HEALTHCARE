@@ -16,65 +16,90 @@ import ViewPatientData from './ViewPatientData';
 import Prescription from './Prescription';
 import ViewAppointments from './ViewAppointments';
 import Payment from './Payment';
-
-
-
+import Header from './Header';
+import Footer from './Footer';
+//import logo from './assets/logo.jpg';
 
 const Home = () => {
   return (
-    <div>
-      <header>
-        <h1>Hospital Management System</h1>
-      </header>
-      <nav>
-        
-        <div className="buttons">
-          
-          <Link to="/staff">Staff</Link>
-          
-          
-          <Link to="/doctor">Doctor</Link>
-          
-          
-          <Link to="/admin">Admin</Link>
-          
-          </div>
-        
-      </nav>
-      <section>
-        <h2>Contact Us</h2>
+    <div class="home">
+      <Header />
+      <main>
+        <div class="content">
+          <h1>CONESTOGA SUPER SPECIALITY HOSPITAL ,WATERLOO</h1>
+          <h2>Get Directions | Contact Us</h2>
+          <button class="buttons">Need Help</button>
+        </div>
+        <div>
+          <img src="/assets/hosp.jpg" class="hosp" alt="Your hosp" />
+        </div>
+      </main>
+
+      <div class="cards">
+        <article class="destCards">
+          <img src="/assets/admin.jpg" alt="" />
+
+          <button>
+            <Link to="/admin">Admin</Link>
+          </button>
+        </article>
+        <article class="destCards">
+          <img src="/assets/doctor.jpg" alt="" />
+
+          <button>
+            <Link to="/doctor">Doctor</Link>
+          </button>
+        </article>
+        <article class="destCards">
+          <img src="/assets/staff.jpg" alt="" />
+          <button>
+            <Link to="/staff">Staff</Link>
+          </button>
+        </article>
+      </div>
+      <div class="about">
+        <h3>ABOUT US</h3>
         <p>
-          Phone: 123-456-7890<br />
-          Email: info@example.com<br />
-          Address: 123 Main Street, City, Country
+          Conestoga Super Speciality Hospital, Mohali is a unit of Hometrail
+          Buildtech Pvt. Ltd., offering services across medical disciplines of
+          Neurosciences, Cardiac Sciences, Cancer Care, Orthopaedics,
+          Obstetrics, and Gynaecology among several others. The 200+ bed
+          healthcare facility is equipped with Medical Intensive Care Unit
+          (MICU), Surgical Intensive Care Unit (SICU), Critical Care Unit (CCU),
+          and Cath Labs and Cath Labs. The team of experts understand the
+          health-related problems and offer personalized care to patients. With
+          83 ICU beds, eight HDU beds, and eight high-end modular Operation
+          Theatres, Max Super Speciality Hospital, Mohali is home to the latest
+          medical technology. And under the guidance of over 80 leading doctors
+          and medical experts, and nursing staff of over 350 nurses, the entire
+          h...
         </p>
-      </section>
-      <footer>&copy; 2023 Hospital Management System. All rights reserved.</footer>
+      </div>
+      <Footer />
     </div>
   );
 };
 
 const HomePage = () => {
   return (
-    <div >
+    <div>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/staff/*" element={<StaffLogin />} />
         <Route path="/doctor/*" element={<DoctorLogin />} />
         <Route path="/admin/*" element={<AdminLogin />} />
-        <Route path="/StaffPage" element = {<StaffPage />}/>
-        <Route path="/AdminPage" element = {<AdminPage />}/>
-        <Route path="/ReportingPage" element = {<ReportingPage />}/>
-        <Route path="/DoctorPage" element = {<DoctorPage />}/>
-        <Route path="/App" element = {<App />}/>
-        <Route path="/ManageAppointment" element = {<ManageAppointment />}/>
-        <Route path="/PatientRegistration" element = {<PatientRegistration />}/>
-        <Route path="/StaffScheduling" element = {<StaffScheduling />}/>
-        <Route path="/ViewPatientData" element = {<ViewPatientData />}/>
-        <Route path="/Prescription" element = {<Prescription />}/>
-        <Route path="/ViewAppointments" element = {<ViewAppointments />}/>
-        <Route path="/Payment" element = {<Payment />}/>
-        
+        <Route path="/StaffPage" element={<StaffPage />} />
+        <Route path="/AdminPage" element={<AdminPage />} />
+        <Route path="/ReportingPage" element={<ReportingPage />} />
+        <Route path="/DoctorPage" element={<DoctorPage />} />
+        <Route path="/App" element={<App />} />
+        <Route path="/ManageAppointment" element={<ManageAppointment />} />
+        <Route path="/PatientRegistration" element={<PatientRegistration />} />
+        <Route path="/StaffScheduling" element={<StaffScheduling />} />
+        <Route path="/ViewPatientData" element={<ViewPatientData />} />
+        <Route path="/Prescription" element={<Prescription />} />
+        <Route path="/ViewAppointments" element={<ViewAppointments />} />
+        <Route path="/Payment" element={<Payment />} />
       </Routes>
       <Outlet />
     </div>

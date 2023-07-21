@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import './optionspage.css';
 import { Link, useNavigate } from 'react-router-dom';
+import Header from './Header';
+import Footer from './Footer';
 
 const AdminPage = () => {
   const navigate = useNavigate();
@@ -34,25 +36,32 @@ const AdminPage = () => {
     return () => clearTimeout(timer);
   }, [navigate]);
 
-
   return (
     <div className="admin-page-container">
+      <Header />
       <h1>Admin</h1>
 
       <div className="options-container">
         <div className="option">
           <h2>Staff Scheduling</h2>
           <p>Use this option to schedule shifts for staff members.</p>
-          <button className="btn"><Link to="/StaffScheduling">Staff Scheduling</Link></button>
+          <button className="btn">
+            <Link to="/StaffScheduling">Staff Scheduling</Link>
+          </button>
         </div>
 
         <div className="option">
           <h2>View Reports</h2>
           <p>Use this option to view reports and analytics.</p>
-          <button className="btn"><Link to="/ReportingPage">View Reports</Link></button>
+          <button className="btn">
+            <Link to="/ReportingPage">View Reports</Link>
+          </button>
         </div>
       </div>
-      <button className="logout-btn" onClick={handleLogout}>Logout</button>
+      <button className="logout-btn" onClick={handleLogout}>
+        Logout
+      </button>
+      <Footer />
     </div>
   );
 };

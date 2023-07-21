@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import './login.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
-
+import Header from './Header';
+import Footer from './Footer';
 
 function AdminLogin() {
   const navigate = useNavigate();
@@ -36,6 +36,7 @@ function AdminLogin() {
 
   return (
     <div>
+      <Header />
       <h2>Admin Login</h2>
       <form>
         <div>
@@ -61,6 +62,7 @@ function AdminLogin() {
         </button>
         {errorMessage && <p>{errorMessage}</p>}
       </form>
+      <Footer />
     </div>
   );
 }

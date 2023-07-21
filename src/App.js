@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 // import './App.css';
 // import logo from './logo.png';
 import { Link } from 'react-router-dom';
-
+import Header from './Header';
+import Footer from './Footer';
 
 const departments = [
   'Cardiology',
@@ -56,15 +57,7 @@ const AppointmentForm = () => {
 
   return (
     <div className="container">
-
-      <header className="header">
-        <div className="logo-heading">
-        {/* <img src={logo} alt="Logo" className="logo" /> */}
-        {/* <h1>Conestoga Health Services</h1> */}
-        </div>
-
-      </header>
-
+      <Header />
       <main className="main">
         <div className="form-container">
           <h1 className="heading">Appointment Booking</h1>
@@ -96,8 +89,6 @@ const AppointmentForm = () => {
               required
             />
 
-
-
             <label htmlFor="department">Department:</label>
             <select
               id="department"
@@ -122,11 +113,12 @@ const AppointmentForm = () => {
               disabled={!department}
             >
               <option value="">Select Doctor</option>
-              {department && doctors[department].map((doc) => (
-                <option value={doc} key={doc}>
-                  {doc}
-                </option>
-              ))}
+              {department &&
+                doctors[department].map((doc) => (
+                  <option value={doc} key={doc}>
+                    {doc}
+                  </option>
+                ))}
             </select>
 
             <label htmlFor="date">Date:</label>
@@ -147,16 +139,15 @@ const AppointmentForm = () => {
               required
             />
 
-            <button type="submit"><Link to="/Payment">Book Appointment</Link></button>
+            <button type="submit">
+              <Link to="/Payment">Book Appointment</Link>
+            </button>
           </form>
         </div>
       </main>
 
-      <footer className="footer">
-        <p>&copy; 2023 Your Hospital. All rights reserved.</p>
-      </footer>
+      <Footer />
     </div>
-    
   );
 };
 

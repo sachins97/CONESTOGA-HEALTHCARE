@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './ManageAppointment.css';
 import { Link } from 'react-router-dom';
+import Header from './Header';
+import Footer from './Footer';
 
 const ManageAppointment = () => {
   const [appointments, setAppointments] = useState([]);
@@ -29,11 +31,19 @@ const ManageAppointment = () => {
 
   return (
     <div className="manage-appointment">
+      <Header />
+
       <h1>Manage Appointments</h1>
       <div className="options">
-        <button><Link to="/ViewAppointments">View Appointments</Link></button>
-        <button onClick={() => console.log('Option 2 clicked')}>Update Appointment</button>
-        <button onClick={() => console.log('Option 3 clicked')}>Delete Appointment</button>
+        <button>
+          <Link to="/ViewAppointments">View Appointments</Link>
+        </button>
+        <button onClick={() => console.log('Option 2 clicked')}>
+          Update Appointment
+        </button>
+        <button onClick={() => console.log('Option 3 clicked')}>
+          Delete Appointment
+        </button>
       </div>
 
       {appointments.length > 0 ? (
@@ -55,8 +65,12 @@ const ManageAppointment = () => {
                 <td>{appointment.date}</td>
                 <td>{appointment.time}</td>
                 <td>
-                  <button onClick={() => updateAppointment(appointment.id)}>Update</button>
-                  <button onClick={() => deleteAppointment(appointment.id)}>Delete</button>
+                  <button onClick={() => updateAppointment(appointment.id)}>
+                    Update
+                  </button>
+                  <button onClick={() => deleteAppointment(appointment.id)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -65,6 +79,7 @@ const ManageAppointment = () => {
       ) : (
         <p>No appointments found.</p>
       )}
+      <Footer />
     </div>
   );
 };

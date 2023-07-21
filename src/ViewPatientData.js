@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './ViewPatientData.css';
 import { Link } from 'react-router-dom';
+import Header from './Header';
+import Footer from './Footer';
 
 const DoctorViewPatientData = () => {
   const [searchValue, setSearchValue] = useState('');
@@ -17,14 +19,41 @@ const DoctorViewPatientData = () => {
         age: 30,
         address: '123 Main Street, City, Country',
         pastVisits: [
-          { date: '2022-01-05', diagnosis: 'Fever', notes: 'Prescribed rest and fluids' },
-          { date: '2022-03-12', diagnosis: 'Headache', notes: 'Prescribed pain relievers' },
-          { date: '2022-06-18', diagnosis: 'Cough', notes: 'Prescribed cough syrup' },
+          {
+            date: '2022-01-05',
+            diagnosis: 'Fever',
+            notes: 'Prescribed rest and fluids',
+          },
+          {
+            date: '2022-03-12',
+            diagnosis: 'Headache',
+            notes: 'Prescribed pain relievers',
+          },
+          {
+            date: '2022-06-18',
+            diagnosis: 'Cough',
+            notes: 'Prescribed cough syrup',
+          },
         ],
         prescriptions: [
-          { date: '2022-01-05', medication: 'Paracetamol', dosage: '500mg', frequency: 'Twice a day' },
-          { date: '2022-03-12', medication: 'Ibuprofen', dosage: '400mg', frequency: 'As needed' },
-          { date: '2022-06-18', medication: 'Cough Syrup', dosage: '10ml', frequency: 'Three times a day' },
+          {
+            date: '2022-01-05',
+            medication: 'Paracetamol',
+            dosage: '500mg',
+            frequency: 'Twice a day',
+          },
+          {
+            date: '2022-03-12',
+            medication: 'Ibuprofen',
+            dosage: '400mg',
+            frequency: 'As needed',
+          },
+          {
+            date: '2022-06-18',
+            medication: 'Cough Syrup',
+            dosage: '10ml',
+            frequency: 'Three times a day',
+          },
         ],
       },
       {
@@ -33,21 +62,50 @@ const DoctorViewPatientData = () => {
         age: 25,
         address: '456 Elm Street, City, Country',
         pastVisits: [
-          { date: '2022-02-10', diagnosis: 'Allergy', notes: 'Prescribed antihistamines' },
-          { date: '2022-04-20', diagnosis: 'Stomachache', notes: 'Prescribed antacids' },
-          { date: '2022-07-05', diagnosis: 'Sprained ankle', notes: 'Prescribed pain medication and rest' },
+          {
+            date: '2022-02-10',
+            diagnosis: 'Allergy',
+            notes: 'Prescribed antihistamines',
+          },
+          {
+            date: '2022-04-20',
+            diagnosis: 'Stomachache',
+            notes: 'Prescribed antacids',
+          },
+          {
+            date: '2022-07-05',
+            diagnosis: 'Sprained ankle',
+            notes: 'Prescribed pain medication and rest',
+          },
         ],
         prescriptions: [
-          { date: '2022-02-10', medication: 'Antihistamines', dosage: '10mg', frequency: 'Once a day' },
-          { date: '2022-04-20', medication: 'Antacids', dosage: '2 tablets', frequency: 'As needed' },
-          { date: '2022-07-05', medication: 'Pain Medication', dosage: '500mg', frequency: 'As needed' },
+          {
+            date: '2022-02-10',
+            medication: 'Antihistamines',
+            dosage: '10mg',
+            frequency: 'Once a day',
+          },
+          {
+            date: '2022-04-20',
+            medication: 'Antacids',
+            dosage: '2 tablets',
+            frequency: 'As needed',
+          },
+          {
+            date: '2022-07-05',
+            medication: 'Pain Medication',
+            dosage: '500mg',
+            frequency: 'As needed',
+          },
         ],
       },
     ];
 
     // Search for the patient based on the searchValue
     const foundPatient = patientRecords.find(
-      (patient) => patient.name.toLowerCase() === searchValue.toLowerCase() || patient.id.toLowerCase() === searchValue.toLowerCase()
+      (patient) =>
+        patient.name.toLowerCase() === searchValue.toLowerCase() ||
+        patient.id.toLowerCase() === searchValue.toLowerCase()
     );
 
     setPatientData(foundPatient);
@@ -65,6 +123,7 @@ const DoctorViewPatientData = () => {
 
   return (
     <div className="patient-data-container">
+      <Header />
       <h2>Search Patient</h2>
       <form onSubmit={handleSearch}>
         <input
@@ -74,7 +133,9 @@ const DoctorViewPatientData = () => {
           onChange={(e) => setSearchValue(e.target.value)}
         />
         <button type="submit">Search</button>
-        <button type="button" onClick={handleClearSearch}>Clear Search</button>
+        <button type="button" onClick={handleClearSearch}>
+          Clear Search
+        </button>
       </form>
 
       {patientData ? (
@@ -137,13 +198,16 @@ const DoctorViewPatientData = () => {
             </tbody>
           </table>
 
-        <center>
-        <button type="button" onClick={handleAddPrescription}><Link to="/Prescription">Add Prescription</Link></button>
-          </center>  
+          <center>
+            <button type="button" onClick={handleAddPrescription}>
+              <Link to="/Prescription">Add Prescription</Link>
+            </button>
+          </center>
         </>
       ) : (
         <p>No patient data found.</p>
       )}
+      <Footer />
     </div>
   );
 };

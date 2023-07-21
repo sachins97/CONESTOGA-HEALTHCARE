@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import './optionspage.css';
 import { Link, useNavigate } from 'react-router-dom';
+import Header from './Header';
+import Footer from './Footer';
 
 const DoctorPage = () => {
   const navigate = useNavigate();
@@ -36,13 +38,16 @@ const DoctorPage = () => {
 
   return (
     <div className="doctor-page-container">
+      <Header />
       <h1>Doctor</h1>
 
       <div className="options-container">
         <div className="option">
           <h2>View Patient Data</h2>
           <p>Use this option to view patient data and medical records.</p>
-          <button className="btn"><Link to="/ViewPatientData">View Patient Data</Link></button>
+          <button className="btn">
+            <Link to="/ViewPatientData">View Patient Data</Link>
+          </button>
         </div>
 
         <div className="option">
@@ -51,8 +56,10 @@ const DoctorPage = () => {
           <button className="btn">Other Option</button>
         </div>
       </div>
-      <button className="logout-btn" onClick={handleLogout}>Logout</button>
-  
+      <button className="logout-btn" onClick={handleLogout}>
+        Logout
+      </button>
+      <Footer />
     </div>
   );
 };

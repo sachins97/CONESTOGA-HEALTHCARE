@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './PatientRegistration.css';
+import Header from './Header';
+import Footer from './Footer';
 
 const UpdatePatientRecord = () => {
   const [name, setName] = useState('');
@@ -23,9 +25,11 @@ const UpdatePatientRecord = () => {
 
   return (
     <div className="container">
+      <Header />
+
       <h1>Update Patient Record</h1>
       <form onSubmit={handleSubmit}>
-      <label htmlFor="name">Name:</label>
+        <label htmlFor="name">Name:</label>
         <input
           type="text"
           id="name"
@@ -74,7 +78,7 @@ const UpdatePatientRecord = () => {
           required
         />
 
-<label htmlFor="">Insurance:</label>
+        <label htmlFor="">Insurance:</label>
         <input
           type="tel"
           id="phone"
@@ -84,6 +88,7 @@ const UpdatePatientRecord = () => {
         />
         <button type="submit">Update</button>
       </form>
+      <Footer />
     </div>
   );
 };

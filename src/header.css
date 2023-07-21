@@ -1,0 +1,71 @@
+.logo-heading {
+  display: flex;
+  align-items: center;
+}
+
+.logo-heading h1 {
+  color: white;
+  margin-left: 380px;
+  font-weight: bolder;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #45c0be;
+  overflow: hidden;
+}
+
+li {
+  float: right;
+}
+
+li a {
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the color of the links when hovered over */
+li a:hover {
+  background-color: #111111;
+}
+
+.navbar {
+  background-color: white;
+  overflow: hidden;
+}
+
+/* Logo styles */
+.logo {
+  float: left;
+  width: 20px;
+}
+img {
+  height: 80px;
+}
+/* Navigation links styles */
+/* .nav-links {
+    float: right;
+  } */
+.nav-links ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  overflow: hidden;
+}
+.nav-links li {
+  list-style-type: none;
+}
+
+.nav-links li a {
+  display: block;
+  color: #004084;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
