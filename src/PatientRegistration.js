@@ -81,7 +81,7 @@ const RegisterPatient = () => {
         <label htmlFor="">Insurance:</label>
         <input
           type="tel"
-          id="phone"
+          id="insurance"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           required

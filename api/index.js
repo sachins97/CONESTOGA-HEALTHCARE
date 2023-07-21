@@ -75,13 +75,13 @@ app.post('/AdminLogin', (req, res) => {
 
 
 
-app.post('/alogin', (req, res) => {
+app.post('/login', (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
 
   sql.connect(config)
     .then(() => {
-      return sql.query`SELECT AdminId FROM Admins WHERE username = ${username} AND password = ${password}`; // Replace Doctor with the actual table name
+      return sql.query`SELECT StaffId FROM Staff WHERE username = ${username} AND password = ${password}`; // Replace Doctor with the actual table name
     })
     .then((result) => {
       if (result.recordset.length === 0) {
@@ -100,6 +100,37 @@ app.post('/alogin', (req, res) => {
       sql.close();
     });
 });
+
+
+//patient registration
+app.post('/PatientRegistration', (req, res) => {
+  let name = req.body.name;
+  let dateOfBirth =req.body.dateOfBirth;
+  let gender = req.body.gender;
+  let address = req.body.address;
+  let phone = req.body.phone;
+  let insurance = req.body.insurance;
+
+  sql.connect(config)
+    .then(() => {
+      return sql.query`INSERT INTO PatientRecords (Name,Dob,Gender,Phone,Address,InsuranceNumber) Values (${name},${dateOfBirth},${gender},${phone},${address},${insurance})`; // Replace Doctor with the actual table name
+    })
+    .then((result) => {
+      if (result.rowsAffected[0] === 0) {
+        res.send('INSERT Failed');
+      } else {
+        res.send('INSERT Successful');
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    })
+    .finally(() => {
+      sql.close();
+    });
+});
+
 
 app.listen(8080, () => {
   console.log('App running');
