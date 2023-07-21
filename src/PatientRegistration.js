@@ -2,26 +2,46 @@ import React, { useState } from 'react';
 import './PatientRegistration.css';
 import Header from './Header';
 import Footer from './Footer';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterPatient = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [gender, setGender] = useState('');
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
+  const [insurance, setInsurance] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit =  async (e) => {
     e.preventDefault();
-    // Perform patient registration logic here
-    // You can save the patient details to a database or perform any other required operations
 
-    // Clear the form after submission
-    setName('');
-    setDateOfBirth('');
-    setGender('');
-    setAddress('');
-    setPhone('');
+    try {
+      const response = await axios.post('http://localhost:8080/PatientRegistration', {
+        name,
+        dateOfBirth,
+        gender,
+        address,
+        phone,
+        insurance
+
+      });
+
+      if (response.data === 'INSERT Successful') {
+        console.log("PatientData Created");
+        // Redirect to the StaffPage component
+        navigate('/ManageAppointment');
+      } else {
+        setErrorMessage('Patient registration failed');
+      }
+    } catch (error) {
+      setErrorMessage('An error occurred during login');
+      console.error('Error:', error);
+    }
   };
+
 
   return (
     <div>
@@ -80,14 +100,17 @@ const RegisterPatient = () => {
 
         <label htmlFor="">Insurance:</label>
         <input
-          type="tel"
+          type="number"
           id="insurance"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          value={insurance}
+          onChange={(e) => setInsurance(e.target.value)}
           required
         />
 
-        <button type="submit">Register</button>
+<button type="submit" onClick={handleSubmit}>
+          Login
+        </button>
+        {errorMessage && <p>{errorMessage}</p>}
       </form>
 
       <Footer />
