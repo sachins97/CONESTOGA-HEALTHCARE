@@ -22,7 +22,7 @@ import Footer from './Footer';
 
 const Home = () => {
   return (
-    <div class="home">
+    <html>
       <Header />
       <main>
         <div class="content">
@@ -30,29 +30,28 @@ const Home = () => {
           <h2>Get Directions | Contact Us</h2>
           <button class="buttons">Need Help</button>
         </div>
-        <div>
-          <img src="/assets/hosp.jpg" class="hosp" alt="Your hosp" />
+        <div class="hosp">
+          <img src="/assets/hosp.jpg" alt="Your hosp" />
         </div>
       </main>
-
       <div class="cards">
         <article class="destCards">
           <img src="/assets/admin.jpg" alt="" />
 
-          <button>
+          <button class="btn">
             <Link to="/admin">Admin</Link>
           </button>
         </article>
         <article class="destCards">
           <img src="/assets/doctor.jpg" alt="" />
 
-          <button>
+          <button class="btn">
             <Link to="/doctor">Doctor</Link>
           </button>
         </article>
         <article class="destCards">
           <img src="/assets/staff.jpg" alt="" />
-          <button>
+          <button class="btn">
             <Link to="/staff">Staff</Link>
           </button>
         </article>
@@ -76,7 +75,7 @@ const Home = () => {
         </p>
       </div>
       <Footer />
-    </div>
+    </html>
   );
 };
 

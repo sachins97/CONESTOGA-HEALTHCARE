@@ -4,7 +4,7 @@ import './header.css';
 const Header = () => {
   return (
     <header>
-      <nav>
+      <nav class="navbar">
         <ul>
           <li>
             <a href="/">Find A Doctor</a>
