@@ -6,7 +6,7 @@ var cors = require('cors');
 app.use(cors());
 app.use(bodyParser.json());
 const config = {
-  server: 'DESKTOP-3NQT7IB\\SSQL',
+  server: 'DESKTOP-D0HCBJN\\SQLEXPRESS',
   driver: 'msnodesqlv8',
   database: 'Hospital',
   options: {
@@ -131,6 +131,73 @@ app.post('/PatientRegistration', (req, res) => {
     });
 });
 
+app.get('/patients/:patientId', async (req, res) => {
+  const patientId = req.params.patientId;
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('patientId', sql.Int, patientId)
+      .query('SELECT * FROM PatientRecords WHERE PatientRecordId = @patientId'); // Replace PatientRecords with the actual table name
+
+    if (result.recordset.length > 0) {
+      res.json(result.recordset[0]);
+    } else {
+      res.status(404).json({ error: 'Patient ID not found' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching patient details' });
+  }
+});
+
+
+// Route to fetch department values
+app.get('/departments', async (req, res) => {
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool.request().query('SELECT * FROM Department'); // Replace Department with the actual table name
+
+    if (result.recordset.length > 0) {
+      // Extracting department names from the result
+      const departmentNames = result.recordset.map((row) => row.departmentName);
+      res.json(departmentNames);
+    } else {
+      res.status(404).json({ error: 'No departments found' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching departments' });
+  }
+});
+
+app.get('/doctors/:department', async (req, res) => {
+
+  const { department } = req.params;
+
+  try {
+
+    const pool = await sql.connect(config);
+
+    const result = await pool.request()
+
+      .input('department', sql.NVarChar, department)
+
+      .query('SELECT * FROM Doctors WHERE DepartmentId IN (SELECT departmentId FROM Department WHERE departmentname = @department)');
+
+
+
+
+    res.json(result.recordset);
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({ error: 'An error occurred while fetching doctors' });
+
+  }
+
+});
 
 app.listen(8080, () => {
   console.log('App running');

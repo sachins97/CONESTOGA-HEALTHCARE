@@ -18,6 +18,7 @@ import ViewAppointments from './ViewAppointments';
 import Payment from './Payment';
 import Header from './Header';
 import Footer from './Footer';
+import ConfirmationPage from './ConfirmationPage';
 //import logo from './assets/logo.jpg';
 
 const Home = () => {
@@ -99,6 +100,7 @@ const HomePage = () => {
         <Route path="/Prescription" element={<Prescription />} />
         <Route path="/ViewAppointments" element={<ViewAppointments />} />
         <Route path="/Payment" element={<Payment />} />
+        <Route path="/ConfirmationPage" element={<ConfirmationPage />} />
       </Routes>
       <Outlet />
     </div>

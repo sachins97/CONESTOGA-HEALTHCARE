@@ -32,7 +32,7 @@ const RegisterPatient = () => {
       if (response.data === 'INSERT Successful') {
         console.log("PatientData Created");
         // Redirect to the StaffPage component
-        navigate('/ManageAppointment');
+        navigate('/StaffPage');
       } else {
         setErrorMessage('Patient registration failed');
       }
