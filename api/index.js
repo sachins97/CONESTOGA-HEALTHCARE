@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const sql = require('mssql/msnodesqlv8');
 const bodyParser = require('body-parser');
+const { Connection, Request } = require('tedious');
 var cors = require('cors');
 app.use(cors());
 app.use(bodyParser.json());
@@ -197,6 +198,31 @@ app.get('/doctors/:department', async (req, res) => {
 
   }
 
+});
+
+
+
+app.post('/appointments', async (req, res) => {
+  try {
+    const { patientrecordid, doctorid, date, time } = req.body;
+
+    const pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('patientrecordid', sql.Int, patientrecordid) // Assuming patientrecordid is an integer (use the appropriate SQL type)
+      .input('doctorid', sql.Int, doctorid) // Assuming doctorid is an integer (use the appropriate SQL type)
+      .input('date', sql.Date, date) // Assuming date is a Date object (use the appropriate SQL type)
+      .input('time', sql.Time, time) // Assuming time is a string in 'HH:mm:ss' format (use the appropriate SQL type)
+      .query('INSERT INTO Appointments (PatientRecordId, DoctorId, date, time) VALUES (@patientrecordid, @doctorid, @date, @time)');
+
+    if (result.rowsAffected[0] === 0) {
+      res.send('INSERT Failed');
+    } else {
+      res.send('INSERT Successful');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 app.listen(8080, () => {
