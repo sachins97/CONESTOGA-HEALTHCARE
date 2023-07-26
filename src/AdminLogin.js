@@ -37,8 +37,8 @@ function AdminLogin() {
   return (
     <div>
       <Header />
-      <h2>Admin Login</h2>
-      <form>
+      <form class="login-form">
+        <h2>Admin Login</h2>
         <div>
           <label htmlFor="username">Username:</label>
           <input

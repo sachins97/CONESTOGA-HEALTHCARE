@@ -36,8 +36,9 @@ function StaffLoginPage() {
   return (
     <div>
       <Header />
-      <h2>Staff Login</h2>
-      <form>
+
+      <form class="login-form">
+        <h2>Staff Login</h2>
         <div>
           <label htmlFor="username">Username:</label>
           <input

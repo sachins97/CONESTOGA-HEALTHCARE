@@ -78,3 +78,11 @@ main {
 .about h3 {
   color: rgb(52, 52, 52);
 }
+
+@media only screen and (max-width: 700px) {
+  h2,
+  .about,
+  .buttons {
+    display: none;
+  }
+}

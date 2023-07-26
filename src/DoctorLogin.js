@@ -36,8 +36,9 @@ function DoctorLogin() {
   return (
     <div>
       <Header />
-      <h2>Doctor Login</h2>
-      <form>
+
+      <form class="login-form">
+        <h2>Doctor Login</h2>
         <div>
           <label htmlFor="username">Username:</label>
           <input
