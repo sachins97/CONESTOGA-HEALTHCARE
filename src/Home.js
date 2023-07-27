@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Outlet, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Link, Outlet, Route, Routes } from 'react-router-dom';
 import StaffLogin from './StaffLogin';
 import DoctorLogin from './DoctorLogin';
 import AdminLogin from './AdminLogin';
@@ -86,25 +86,30 @@ const HomePage = () => {
     // </div>
     <div>
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/staff/*" element={<StaffLogin />} />
-        <Route path="/doctor/*" element={<DoctorLogin />} />
-        <Route path="/admin/*" element={<AdminLogin />} />
-        <Route path="/StaffPage" element={<StaffPage />} />
-        <Route path="/AdminPage" element={<AdminPage />} />
-        <Route path="/ReportingPage" element={<ReportingPage />} />
-        <Route path="/DoctorPage" element={<DoctorPage />} />
-        <Route path="/App" element={<App />} />
-        <Route path="/ManageAppointment" element={<ManageAppointment />} />
-        <Route path="/PatientRegistration" element={<PatientRegistration />} />
-        <Route path="/StaffScheduling" element={<StaffScheduling />} />
-        <Route path="/ViewPatientData" element={<ViewPatientData />} />
-        <Route path="/Prescription" element={<Prescription />} />
-        <Route path="/ViewAppointments" element={<ViewAppointments />} />
-        <Route path="/Payment" element={<Payment />} />
-        <Route path="/ConfirmationPage" element={<ConfirmationPage />} />
-      </Routes>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/staff/*" element={<StaffLogin />} />
+          <Route path="/doctor/*" element={<DoctorLogin />} />
+          <Route path="/admin/*" element={<AdminLogin />} />
+          <Route path="/StaffPage" element={<StaffPage />} />
+          <Route path="/AdminPage" element={<AdminPage />} />
+          <Route path="/ReportingPage" element={<ReportingPage />} />
+          <Route path="/DoctorPage" element={<DoctorPage />} />
+          <Route path="/App" element={<App />} />
+          <Route path="/ManageAppointment" element={<ManageAppointment />} />
+          <Route
+            path="/PatientRegistration"
+            element={<PatientRegistration />}
+          />
+          <Route path="/StaffScheduling" element={<StaffScheduling />} />
+          <Route path="/ViewPatientData" element={<ViewPatientData />} />
+          <Route path="/Prescription" element={<Prescription />} />
+          <Route path="/ViewAppointments" element={<ViewAppointments />} />
+          <Route path="/Payment" element={<Payment />} />
+          <Route path="/ConfirmationPage" element={<ConfirmationPage />} />
+        </Routes>
+      </BrowserRouter>
       <Footer />
     </div>
   );
