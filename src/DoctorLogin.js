@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Header from './Header';
+import Footer from './Footer';
 
 function DoctorLogin() {
   const navigate = useNavigate();
@@ -33,8 +35,9 @@ function DoctorLogin() {
 
   return (
     <div>
-      <form className="login-form">
-        <h2>Doctor Login</h2>
+      <Header />
+      <h2>Doctor Login</h2>
+      <form>
         <div>
           <label htmlFor="username">Username:</label>
           <input
@@ -58,6 +61,7 @@ function DoctorLogin() {
         </button>
         {errorMessage && <p>{errorMessage}</p>}
       </form>
+      <Footer />
     </div>
   );
 }

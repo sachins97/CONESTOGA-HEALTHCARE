@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { Link, Outlet, Route, Routes } from 'react-router-dom';
 import StaffLogin from './StaffLogin';
 import DoctorLogin from './DoctorLogin';
 import AdminLogin from './AdminLogin';
@@ -18,45 +18,46 @@ import ViewAppointments from './ViewAppointments';
 import Payment from './Payment';
 import Header from './Header';
 import Footer from './Footer';
-import ConfirmationPage from './ConfirmationPage';
 //import logo from './assets/logo.jpg';
 
 const Home = () => {
   return (
-    <div>
+    <div class="home">
+      <Header />
       <main>
-        <div className="content">
+        <div class="content">
           <h1>CONESTOGA SUPER SPECIALITY HOSPITAL ,WATERLOO</h1>
           <h2>Get Directions | Contact Us</h2>
-          <button className="buttons">Need Help</button>
+          <button class="buttons">Need Help</button>
         </div>
-        <div className="hosp">
-          <img src="/assets/hosp.jpg" alt="Your hosp" />
+        <div>
+          <img src="/assets/hosp.jpg" class="hosp" alt="Your hosp" />
         </div>
       </main>
-      <div className="cards">
-        <article className="destCards">
+
+      <div class="cards">
+        <article class="destCards">
           <img src="/assets/admin.jpg" alt="" />
 
-          <button className="btn">
+          <button>
             <Link to="/admin">Admin</Link>
           </button>
         </article>
-        <article className="destCards">
+        <article class="destCards">
           <img src="/assets/doctor.jpg" alt="" />
 
-          <button className="btn">
+          <button>
             <Link to="/doctor">Doctor</Link>
           </button>
         </article>
-        <article className="destCards">
+        <article class="destCards">
           <img src="/assets/staff.jpg" alt="" />
-          <button className="btn">
+          <button>
             <Link to="/staff">Staff</Link>
           </button>
         </article>
       </div>
-      <div className="about">
+      <div class="about">
         <h3>ABOUT US</h3>
         <p>
           Conestoga Super Speciality Hospital, Mohali is a unit of Hometrail
@@ -74,49 +75,33 @@ const Home = () => {
           h...
         </p>
       </div>
+      <Footer />
     </div>
   );
 };
 
 const HomePage = () => {
   return (
-    // <div>
-
-    //   <Outlet />
-    // </div>
     <div>
-      <Header />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/staff/*" element={<StaffLogin />} />
-          <Route path="/doctor/*" element={<DoctorLogin />} />
-          <Route path="/admin/*" element={<AdminLogin />} />
-          <Route path="/StaffPage" element={<StaffPage />} />
-          <Route path="/AdminPage" element={<AdminPage />} />
-          <Route path="/ReportingPage" element={<ReportingPage />} />
-          <Route path="/DoctorPage" element={<DoctorPage />} />
-          <Route path="/App" element={<App />} />
-          <Route path="/ManageAppointment" element={<ManageAppointment />} />
-          
-          {/* Route for the ViewPatientData component */}
-          <Route exact path="/" element={<ViewPatientData/>} />
-          {/* Route for the Prescription component */}
-          <Route path="/Prescription/:patientId" element={<Prescription/>} />
-
-          <Route
-            path="/PatientRegistration"
-            element={<PatientRegistration />}
-          />
-          <Route path="/StaffScheduling" element={<StaffScheduling />} />
-          <Route path="/ViewPatientData" element={<ViewPatientData />} />
-          
-          <Route path="/ViewAppointments" element={<ViewAppointments />} />
-          <Route path="/Payment" element={<Payment />} />
-          <Route path="/ConfirmationPage" element={<ConfirmationPage />} />
-        </Routes>
-      </BrowserRouter>
-      <Footer />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/staff/*" element={<StaffLogin />} />
+        <Route path="/doctor/*" element={<DoctorLogin />} />
+        <Route path="/admin/*" element={<AdminLogin />} />
+        <Route path="/StaffPage" element={<StaffPage />} />
+        <Route path="/AdminPage" element={<AdminPage />} />
+        <Route path="/ReportingPage" element={<ReportingPage />} />
+        <Route path="/DoctorPage" element={<DoctorPage />} />
+        <Route path="/App" element={<App />} />
+        <Route path="/ManageAppointment" element={<ManageAppointment />} />
+        <Route path="/PatientRegistration" element={<PatientRegistration />} />
+        <Route path="/StaffScheduling" element={<StaffScheduling />} />
+        <Route path="/ViewPatientData" element={<ViewPatientData />} />
+        <Route path="/Prescription" element={<Prescription />} />
+        <Route path="/ViewAppointments" element={<ViewAppointments />} />
+        <Route path="/Payment" element={<Payment />} />
+      </Routes>
+      <Outlet />
     </div>
   );
 };
