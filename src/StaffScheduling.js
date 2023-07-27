@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import './StaffScheduling.css';
-import Header from './Header';
-import Footer from './Footer';
 
 const StaffScheduling = () => {
   const [staffList, setStaffList] = useState([
@@ -109,13 +107,11 @@ const StaffScheduling = () => {
 
   return (
     <div className="staff-scheduling-container">
-      <Header />
       <h2>Staff Scheduling</h2>
       {renderScheduleTable()}
       <button className="publish-button" onClick={handlePublishShifts}>
         Publish Shifts
       </button>
-      <Footer />
     </div>
   );
 };

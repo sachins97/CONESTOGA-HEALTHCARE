@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import './ViewAppointments.css';
 import { Routes, Route } from 'react-router-dom';
-import Header from './Header';
-import Footer from './Footer';
 
 const ViewAppointments = () => {
   const [date, setDate] = useState('');
@@ -109,8 +107,6 @@ const ViewAppointments = () => {
 
   return (
     <div className="view-appointments">
-      <Header />
-
       <h1>View Appointments</h1>
 
       <form onSubmit={handleSearch}>
@@ -181,8 +177,6 @@ const ViewAppointments = () => {
           )}
         </tbody>
       </table>
-
-      <Footer />
     </div>
   );
 };

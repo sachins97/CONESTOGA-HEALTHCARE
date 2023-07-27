@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import './login.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Header from './Header';
-import Footer from './Footer';
 
 function AdminLogin() {
   const navigate = useNavigate();

@@ -1,7 +1,5 @@
 import React from 'react';
 import './ReportingPage.css';
-import Header from './Header';
-import Footer from './Footer';
 
 const ReportingPage = () => {
   // Sample report data
@@ -17,7 +15,6 @@ const ReportingPage = () => {
 
   return (
     <div className="reporting-page">
-      <Header />
       <h1>Reporting / Analytics / Statistics</h1>
 
       <div className="reports-container">
@@ -28,7 +25,6 @@ const ReportingPage = () => {
           </div>
         ))}
       </div>
-      <Footer />
     </div>
   );
 };

@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import './optionspage.css';
 import { Link, useNavigate } from 'react-router-dom';
-import Header from './Header';
-import Footer from './Footer';
+
 const StaffPage = () => {
   const navigate = useNavigate();
 
@@ -37,7 +36,6 @@ const StaffPage = () => {
 
   return (
     <div className="staff-page-container">
-      <Header />
       <h1>Staff</h1>
 
       <div className="options-container">
@@ -71,7 +69,6 @@ const StaffPage = () => {
       <button className="logout-btn" onClick={handleLogout}>
         Logout
       </button>
-      <Footer />
     </div>
   );
 };

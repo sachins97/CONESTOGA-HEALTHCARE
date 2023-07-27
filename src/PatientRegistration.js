@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './PatientRegistration.css';
-import Header from './Header';
-import Footer from './Footer';
+
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,22 +14,24 @@ const RegisterPatient = () => {
   const [insurance, setInsurance] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit =  async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8080/PatientRegistration', {
-        name,
-        dateOfBirth,
-        gender,
-        address,
-        phone,
-        insurance
-
-      });
+      const response = await axios.post(
+        'http://localhost:8080/PatientRegistration',
+        {
+          name,
+          dateOfBirth,
+          gender,
+          address,
+          phone,
+          insurance,
+        }
+      );
 
       if (response.data === 'INSERT Successful') {
-        console.log("PatientData Created");
+        console.log('PatientData Created');
         // Redirect to the StaffPage component
         navigate('/StaffPage');
       } else {
@@ -42,11 +43,8 @@ const RegisterPatient = () => {
     }
   };
 
-
   return (
     <div>
-      <Header />
-
       <h1>Register Patient</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Name:</label>
@@ -107,13 +105,11 @@ const RegisterPatient = () => {
           required
         />
 
-<button type="submit" onClick={handleSubmit}>
+        <button type="submit" onClick={handleSubmit}>
           Login
         </button>
         {errorMessage && <p>{errorMessage}</p>}
       </form>
-
-      <Footer />
     </div>
   );
 };

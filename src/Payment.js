@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import './Payment.css';
-import Header from './Header';
-import Footer from './Footer';
 
 const PaymentGateway = () => {
   const [cardNumber, setCardNumber] = useState('');
@@ -23,7 +21,6 @@ const PaymentGateway = () => {
 
   return (
     <div className="payment-gateway">
-      <Header />
       <h1>Payment Gateway</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="cardHolderName">Card Holder Name:</label>
@@ -64,7 +61,6 @@ const PaymentGateway = () => {
 
         <button type="submit">Submit Payment</button>
       </form>
-      <Footer />
     </div>
   );
 };

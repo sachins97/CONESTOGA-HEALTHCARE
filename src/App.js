@@ -1,14 +1,9 @@
-
-import React, { useState,useEffect  } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import Header from './Header';
-import Footer from './Footer';
+
 import ConfirmationPage from './ConfirmationPage';
 import Payment from './Payment';
-
-
-
 
 const AppointmentForm = () => {
   const [name, setName] = useState('');
@@ -47,9 +42,6 @@ const AppointmentForm = () => {
     }
   };
 
-
-
-
   useEffect(() => {
     // Fetch department names from the server when the component mounts
     const fetchDepartments = async () => {
@@ -64,39 +56,38 @@ const AppointmentForm = () => {
     fetchDepartments();
   }, []);
 
-  const doctorsetId=null;
- 
-    // Fetch doctors by department from the server when the department changes
-    const fetchDoctorsByDepartment = async (selectedDepartment) => {
-      try {
-        setError('');
-        if (selectedDepartment) {
-          const response = await axios.get(`http://localhost:8080/doctors/${selectedDepartment}`);
-          console.log('Doctors Data:', response.data);
-          
-          setDoctorsByDepartment((prevDoctorsByDept) => ({
-            ...prevDoctorsByDept,
-            [selectedDepartment]: response.data,
-          }));
-        } else {
-          // If no department is selected, clear the doctor list
-          setDoctorsByDepartment({});
-        }
-      } catch (error) {
-        console.error('Error fetching doctors:', error);
+  const doctorsetId = null;
+
+  // Fetch doctors by department from the server when the department changes
+  const fetchDoctorsByDepartment = async (selectedDepartment) => {
+    try {
+      setError('');
+      if (selectedDepartment) {
+        const response = await axios.get(
+          `http://localhost:8080/doctors/${selectedDepartment}`
+        );
+        console.log('Doctors Data:', response.data);
+
+        setDoctorsByDepartment((prevDoctorsByDept) => ({
+          ...prevDoctorsByDept,
+          [selectedDepartment]: response.data,
+        }));
+      } else {
+        // If no department is selected, clear the doctor list
+        setDoctorsByDepartment({});
       }
-    };
-   ;
-
-
-   const handleSubmit = async (e) => {
+    } catch (error) {
+      console.error('Error fetching doctors:', error);
+    }
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       // Logic for submitting the form data and booking the appointment
       setError('');
 
       console.log('Selected Doctor ID:', doctor);
-   //   console.log('Selected Payment Option:', selectedPaymentOption);
+      //   console.log('Selected Payment Option:', selectedPaymentOption);
 
       // Save the appointment data to the database if insurance payment is selected
       if (selectedPaymentOption === 'insurance') {
@@ -106,13 +97,16 @@ const AppointmentForm = () => {
           date: date,
           time: time,
         };
-        const response = await axios.post('http://localhost:8080/appointments', appointmentData);
+        const response = await axios.post(
+          'http://localhost:8080/appointments',
+          appointmentData
+        );
         console.log('Appointment saved:', response.data);
       }
 
       // Resetting the form after successful submission
       setName('');
-          setPhone('');
+      setPhone('');
       setDoctor('');
       setDepartment('');
       setDate('');
@@ -142,12 +136,14 @@ const AppointmentForm = () => {
     setDoctor(selectedDoctorId); // Set the selected doctor ID to the 'doctor' state
     setSelectedDoctorId(selectedDoctorId); // Set the selected doctor ID to the 'selectedDoctorId' state
   };
-  
+
   const searchPatient = async () => {
     try {
       setError('');
       // Fetch patient details based on the entered patient ID
-      const response = await axios.get(`http://localhost:8080/patients/${patientIdInput}`);
+      const response = await axios.get(
+        `http://localhost:8080/patients/${patientIdInput}`
+      );
       setSearchedPatient(response.data);
     } catch (error) {
       // Handle the case when patient ID is not found in the database
@@ -155,11 +151,8 @@ const AppointmentForm = () => {
     }
   };
 
- 
-
   return (
     <div className="container">
-      <Header />
       <main className="main">
         <div className="form-container">
           <h1 className="heading">Appointment Booking</h1>
@@ -186,8 +179,8 @@ const AppointmentForm = () => {
                 {/* Include any other patient details you want to display */}
               </div>
             )}
-             
-             <label htmlFor="department">Department:</label>
+
+            <label htmlFor="department">Department:</label>
             <select
               id="department"
               value={department}
@@ -204,22 +197,21 @@ const AppointmentForm = () => {
 
             <label htmlFor="doctor">Doctor:</label>
             <label htmlFor="doctor">Doctor:</label>
-<select
-  id="doctor"
-  value={selectedDoctorId} // Use selectedDoctorId instead of doctor
-  onChange={handleDoctorChange} // Use the new handler function
-  required
-  disabled={!department}
->
-  <option value="">Select Doctor</option>
-  {department &&
-    doctorsByDepartment[department]?.map((doc) => (
-      <option value={doc.DoctorId} key={doc.DoctorId}>
-        {doc.Name}
-      </option>
-    ))}
-</select>
-
+            <select
+              id="doctor"
+              value={selectedDoctorId} // Use selectedDoctorId instead of doctor
+              onChange={handleDoctorChange} // Use the new handler function
+              required
+              disabled={!department}
+            >
+              <option value="">Select Doctor</option>
+              {department &&
+                doctorsByDepartment[department]?.map((doc) => (
+                  <option value={doc.DoctorId} key={doc.DoctorId}>
+                    {doc.Name}
+                  </option>
+                ))}
+            </select>
 
             <label htmlFor="date">Date:</label>
             <input
@@ -239,7 +231,7 @@ const AppointmentForm = () => {
               required
             />
 
-<label htmlFor="paymentOption">Payment Option:</label>
+            <label htmlFor="paymentOption">Payment Option:</label>
             <select
               id="paymentOption"
               value={selectedPaymentOption}
@@ -255,24 +247,18 @@ const AppointmentForm = () => {
             {selectedPaymentOption === 'insurance' ? (
               // <ConfirmationPage />
               <button type="submit" onClick={handleSubmit}>
-              <Link to="/ConfirmationPage">Book Appointment</Link>
-            </button>
+                <Link to="/ConfirmationPage">Book Appointment</Link>
+              </button>
             ) : selectedPaymentOption === 'credit_debit' ? (
               // <Payment />
               <button type="submit_Payment">
-              <Link to="/Payment">Book Appointment</Link>
-            </button>
+                <Link to="/Payment">Book Appointment</Link>
+              </button>
             ) : null}
-
-            
           </form>
         </div>
       </main>
-
-    
     </div>
-  
-
   );
 };
 

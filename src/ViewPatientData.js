@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import './ViewPatientData.css';
 import { Link } from 'react-router-dom';
-import Header from './Header';
-import Footer from './Footer';
 
 const DoctorViewPatientData = () => {
   const [searchValue, setSearchValue] = useState('');
@@ -123,7 +121,6 @@ const DoctorViewPatientData = () => {
 
   return (
     <div className="patient-data-container">
-      <Header />
       <h2>Search Patient</h2>
       <form onSubmit={handleSearch}>
         <input
@@ -207,7 +204,6 @@ const DoctorViewPatientData = () => {
       ) : (
         <p>No patient data found.</p>
       )}
-      <Footer />
     </div>
   );
 };
