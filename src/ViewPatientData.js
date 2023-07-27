@@ -1,114 +1,32 @@
 import React, { useState } from 'react';
 import './ViewPatientData.css';
 import { Link } from 'react-router-dom';
-import Header from './Header';
-import Footer from './Footer';
 
 const DoctorViewPatientData = () => {
   const [searchValue, setSearchValue] = useState('');
   const [patientData, setPatientData] = useState(null);
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
 
-    // Example: Dummy data for demonstration
-    const patientRecords = [
-      {
-        name: 'John Doe',
-        id: 'PT001',
-        age: 30,
-        address: '123 Main Street, City, Country',
-        pastVisits: [
-          {
-            date: '2022-01-05',
-            diagnosis: 'Fever',
-            notes: 'Prescribed rest and fluids',
-          },
-          {
-            date: '2022-03-12',
-            diagnosis: 'Headache',
-            notes: 'Prescribed pain relievers',
-          },
-          {
-            date: '2022-06-18',
-            diagnosis: 'Cough',
-            notes: 'Prescribed cough syrup',
-          },
-        ],
-        prescriptions: [
-          {
-            date: '2022-01-05',
-            medication: 'Paracetamol',
-            dosage: '500mg',
-            frequency: 'Twice a day',
-          },
-          {
-            date: '2022-03-12',
-            medication: 'Ibuprofen',
-            dosage: '400mg',
-            frequency: 'As needed',
-          },
-          {
-            date: '2022-06-18',
-            medication: 'Cough Syrup',
-            dosage: '10ml',
-            frequency: 'Three times a day',
-          },
-        ],
-      },
-      {
-        name: 'Jane Smith',
-        id: 'PT002',
-        age: 25,
-        address: '456 Elm Street, City, Country',
-        pastVisits: [
-          {
-            date: '2022-02-10',
-            diagnosis: 'Allergy',
-            notes: 'Prescribed antihistamines',
-          },
-          {
-            date: '2022-04-20',
-            diagnosis: 'Stomachache',
-            notes: 'Prescribed antacids',
-          },
-          {
-            date: '2022-07-05',
-            diagnosis: 'Sprained ankle',
-            notes: 'Prescribed pain medication and rest',
-          },
-        ],
-        prescriptions: [
-          {
-            date: '2022-02-10',
-            medication: 'Antihistamines',
-            dosage: '10mg',
-            frequency: 'Once a day',
-          },
-          {
-            date: '2022-04-20',
-            medication: 'Antacids',
-            dosage: '2 tablets',
-            frequency: 'As needed',
-          },
-          {
-            date: '2022-07-05',
-            medication: 'Pain Medication',
-            dosage: '500mg',
-            frequency: 'As needed',
-          },
-        ],
-      },
-    ];
+    try {
+      // Replace the API_BASE_URL with the actual API endpoint for fetching patient data
+      const API_BASE_URL = 'http://localhost:8080'; // Replace with your API URL
+      const response = await fetch(`${API_BASE_URL}/patientprescription/${searchValue}`);
+      const data = await response.json();
 
-    // Search for the patient based on the searchValue
-    const foundPatient = patientRecords.find(
-      (patient) =>
-        patient.name.toLowerCase() === searchValue.toLowerCase() ||
-        patient.id.toLowerCase() === searchValue.toLowerCase()
-    );
-
-    setPatientData(foundPatient);
+      if (response.status === 200) {
+        setPatientData(data);
+      } else if (response.status === 404) {
+        setPatientData(null);
+        console.log('Patient data not found.');
+      } else {
+        console.log('An error occurred while fetching patient data.');
+        console.log(data); // Log the API response for debugging
+      }
+    } catch (error) {
+      console.error('An error occurred while fetching patient data.', error);
+    }
   };
 
   const handleClearSearch = () => {
@@ -117,13 +35,23 @@ const DoctorViewPatientData = () => {
   };
 
   const handleAddPrescription = () => {
-    // Logic to navigate to the Add Prescription page or component
-    console.log('Navigate to Add Prescription');
+    // Logic to navigate to the Add Prescription page with the patient ID as a URL parameter
+    if (patientData) {
+      const patientId = patientData.PatientRecordId;
+      const patientName = patientData.Name;
+      // Use the `Link` component to navigate and pass the patient ID and name as URL parameters
+      return (
+        <Link to={`/Prescription/${patientId}?name=${patientName}`}>
+          <button type="button">Add Prescription</button>
+        </Link>
+      );
+    }
+    // If patientData is not available, return null or any other fallback content
+    return null;
   };
 
   return (
     <div className="patient-data-container">
-      <Header />
       <h2>Search Patient</h2>
       <form onSubmit={handleSearch}>
         <input
@@ -143,71 +71,87 @@ const DoctorViewPatientData = () => {
           <h2>Patient Details</h2>
           <div className="patient-details">
             <div>
-              <strong>Name:</strong> {patientData.name}
+              <strong>Name:</strong> {patientData.Name}
             </div>
             <div>
-              <strong>ID:</strong> {patientData.id}
+              <strong>ID:</strong> {patientData.PatientRecordId}
             </div>
             <div>
-              <strong>Age:</strong> {patientData.age}
+              <strong>DOB:</strong> {patientData.Dob}
             </div>
             <div>
-              <strong>Address:</strong> {patientData.address}
+              <strong>Gender:</strong> {patientData.Gender}
+            </div>
+            <div>
+              <strong>Phone:</strong> {patientData.Phone}
+            </div>
+            <div>
+              <strong>Address:</strong> {patientData.Address}
+            </div>
+            <div>
+              <strong>Insurance Number:</strong> {patientData.InsuranceNumber}
             </div>
           </div>
 
-          <h2>Past Visits</h2>
-          <table className="visit-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Diagnosis</th>
-                <th>Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {patientData.pastVisits.map((visit, index) => (
-                <tr key={index}>
-                  <td>{visit.date}</td>
-                  <td>{visit.diagnosis}</td>
-                  <td>{visit.notes}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {patientData.pastVisits && patientData.pastVisits.length > 0 ? (
+            <>
+              <h2>Past Visits</h2>
+              <table className="visit-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Diagnosis</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {patientData.pastVisits.map((visit, index) => (
+                    <tr key={index}>
+                      <td>{visit.date}</td>
+                      <td>{visit.diagnosis}</td>
+                      <td>{visit.notes}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          ) : (
+            <p>No past visits found.</p>
+          )}
 
-          <h2>Prescriptions</h2>
-          <table className="prescription-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Medication</th>
-                <th>Dosage</th>
-                <th>Frequency</th>
-              </tr>
-            </thead>
-            <tbody>
-              {patientData.prescriptions.map((prescription, index) => (
-                <tr key={index}>
-                  <td>{prescription.date}</td>
-                  <td>{prescription.medication}</td>
-                  <td>{prescription.dosage}</td>
-                  <td>{prescription.frequency}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {patientData.prescriptions && patientData.prescriptions.length > 0 ? (
+            <>
+              <h2>Prescriptions</h2>
+              <table className="prescription-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Medication</th>
+                    <th>Dosage</th>
+                    <th>Frequency</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {patientData.prescriptions.map((prescription, index) => (
+                    <tr key={index}>
+                      <td>{prescription.Date}</td>
+                      <td>{prescription.Medication}</td>
+                      <td>{prescription.Dosage}</td>
+                      <td>{prescription.Frequency}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          ) : (
+            <p>No prescriptions found.</p>
+          )}
 
-          <center>
-            <button type="button" onClick={handleAddPrescription}>
-              <Link to="/Prescription">Add Prescription</Link>
-            </button>
-          </center>
+          <center>{handleAddPrescription()}</center>
         </>
       ) : (
         <p>No patient data found.</p>
       )}
-      <Footer />
     </div>
   );
 };
