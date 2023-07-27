@@ -20,9 +20,12 @@ const AppointmentForm = () => {
   const [departments, setDepartments] = useState([]);
   const [doctorsByDepartment, setDoctorsByDepartment] = useState({});
   const [selectedPaymentOption, setSelectedPaymentOption] = useState(null);
+  const [cardNumber, setCardNumber] = useState('');
+  const [expirationDate, setExpirationDate] = useState('');
 
   const handlePaymentOptionChange = (e) => {
     setSelectedPaymentOption(e.target.value);
+    console.log("payment option =" ,setSelectedPaymentOption(e.target.value));
   };
 
   const handlePaymentSubmit = (e) => {
@@ -42,6 +45,60 @@ const AppointmentForm = () => {
     }
   };
 
+  const generatePaymentId = () => {
+    // Generate a random number between 1 and 999
+    const randomNum = Math.floor(Math.random() * 999) + 1;
+    // Pad the number with leading zeros to make it a 3-digit number
+    return `PID${randomNum.toString().padStart(3, '0')}`;
+  };
+
+  const PaymentGateway = () => {
+  
+    // Function to handle payment form submission
+    const handlePaymentSubmit = async (e) => {
+      e.preventDefault();
+      // You can implement the payment processing logic here, e.g., calling a payment API
+      // For this example, we'll just generate a paymentId and pass the payment details to the parent component
+      const paymentId = generatePaymentId();
+      const paymentData = {
+        cardNumber: cardNumber,
+        expirationDate: expirationDate,
+        // Add other payment details as needed
+      };
+      // await onSubmitPayment(paymentId); // Wait for the onSubmitPayment function to complete
+      // this.props.history.push('/ConfirmationPage'); // Navigate to the confirmation page
+    };
+    return (
+      <div>
+      <h2>Payment Gateway</h2>
+      <form>
+        {/* Add payment form fields here, e.g., card number, expiration date, etc. */}
+        <label htmlFor="cardNumber">Card Number:</label>
+    <input
+      type="text"
+      id="cardNumber"
+     
+           required
+    />
+
+    <label htmlFor="expirationDate">Expiration Date:</label>
+    <input
+              type="month"
+              id="expirationDate"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              required
+            />
+    
+       
+       
+      </form>
+    </div>
+    
+    
+    );
+  };
+
   useEffect(() => {
     // Fetch department names from the server when the component mounts
     const fetchDepartments = async () => {
@@ -56,30 +113,8 @@ const AppointmentForm = () => {
     fetchDepartments();
   }, []);
 
-  const doctorsetId = null;
+  
 
-  // Fetch doctors by department from the server when the department changes
-  const fetchDoctorsByDepartment = async (selectedDepartment) => {
-    try {
-      setError('');
-      if (selectedDepartment) {
-        const response = await axios.get(
-          `http://localhost:8080/doctors/${selectedDepartment}`
-        );
-        console.log('Doctors Data:', response.data);
-
-        setDoctorsByDepartment((prevDoctorsByDept) => ({
-          ...prevDoctorsByDept,
-          [selectedDepartment]: response.data,
-        }));
-      } else {
-        // If no department is selected, clear the doctor list
-        setDoctorsByDepartment({});
-      }
-    } catch (error) {
-      console.error('Error fetching doctors:', error);
-    }
-  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -87,7 +122,7 @@ const AppointmentForm = () => {
       setError('');
 
       console.log('Selected Doctor ID:', doctor);
-      //   console.log('Selected Payment Option:', selectedPaymentOption);
+      console.log('Selected Payment Option:', selectedPaymentOption);
 
       // Save the appointment data to the database if insurance payment is selected
       if (selectedPaymentOption === 'insurance') {
@@ -97,10 +132,19 @@ const AppointmentForm = () => {
           date: date,
           time: time,
         };
-        const response = await axios.post(
-          'http://localhost:8080/appointments',
-          appointmentData
-        );
+        const response = await axios.post('http://localhost:8080/appointments', appointmentData);
+        console.log('Appointment saved:', response.data);
+      }else if (selectedPaymentOption === 'credit_debit') {
+        const paymentId = generatePaymentId();
+        const appointmentData = {
+          patientrecordid: patientIdInput,
+          doctorid: doctor,
+          date: date,
+          time: time,
+          paymentid: paymentId,
+        };
+  
+        const response = await axios.post('http://localhost:8080/appointments', appointmentData);
         console.log('Appointment saved:', response.data);
       }
 
@@ -141,18 +185,37 @@ const AppointmentForm = () => {
     try {
       setError('');
       // Fetch patient details based on the entered patient ID
-      const response = await axios.get(
-        `http://localhost:8080/patients/${patientIdInput}`
-      );
+      const response = await axios.get(`http://localhost:8080/patients/${patientIdInput}`);
       setSearchedPatient(response.data);
     } catch (error) {
       // Handle the case when patient ID is not found in the database
       setError('Patient ID not found in the database.');
     }
   };
+  // Fetch doctors by department from the server when the department changes
+  const fetchDoctorsByDepartment = async (selectedDepartment) => {
+    try {
+      setError('');
+      if (selectedDepartment) {
+        const response = await axios.get(`http://localhost:8080/doctors/${selectedDepartment}`);
+        console.log('Doctors Data:', response.data);
+        
+        setDoctorsByDepartment((prevDoctorsByDept) => ({
+          ...prevDoctorsByDept,
+          [selectedDepartment]: response.data,
+        }));
+      } else {
+        // If no department is selected, clear the doctor list
+        setDoctorsByDepartment({});
+      }
+    } catch (error) {
+      console.error('Error fetching doctors:', error);
+    }
+  };
 
   return (
     <div className="container">
+      <Header />
       <main className="main">
         <div className="form-container">
           <h1 className="heading">Appointment Booking</h1>
@@ -195,7 +258,6 @@ const AppointmentForm = () => {
               ))}
             </select>
 
-            <label htmlFor="doctor">Doctor:</label>
             <label htmlFor="doctor">Doctor:</label>
             <select
               id="doctor"
@@ -245,19 +307,22 @@ const AppointmentForm = () => {
 
             {/* Conditionally render the confirmation page or the payment gateway page */}
             {selectedPaymentOption === 'insurance' ? (
-              // <ConfirmationPage />
-              <button type="submit" onClick={handleSubmit}>
-                <Link to="/ConfirmationPage">Book Appointment</Link>
-              </button>
-            ) : selectedPaymentOption === 'credit_debit' ? (
-              // <Payment />
-              <button type="submit_Payment">
-                <Link to="/Payment">Book Appointment</Link>
-              </button>
-            ) : null}
+   <button type="submit" onClick={handleSubmit}>
+   <Link to="/ConfirmationPage">Book Appointment</Link>
+ </button>
+) : selectedPaymentOption === 'credit_debit' ? (
+  <>
+    <PaymentGateway />
+    <button type="submit" onClick={handleSubmit}>
+   <Link to="/ConfirmationPage">Submit Payment</Link>
+   </button>
+  </>
+) : null}
+
           </form>
         </div>
       </main>
+     
     </div>
   );
 };

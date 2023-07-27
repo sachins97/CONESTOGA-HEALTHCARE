@@ -7,7 +7,7 @@ var cors = require('cors');
 app.use(cors());
 app.use(bodyParser.json());
 const config = {
-  server: 'LAPTOP-9VI64K50\\SQLEXPRESS',
+  server: 'DESKTOP-D0HCBJN\\SQLEXPRESS',
   driver: 'msnodesqlv8',
   database: 'Hospital',
   options: {
@@ -23,8 +23,7 @@ app.post('/DoctorLogin', (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
 
-  sql
-    .connect(config)
+  sql.connect(config)
     .then(() => {
       return sql.query`SELECT DoctorId FROM Doctors WHERE username = ${username} AND password = ${password}`; // Replace Doctor with the actual table name
     })
@@ -52,8 +51,7 @@ app.post('/AdminLogin', (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
 
-  sql
-    .connect(config)
+  sql.connect(config)
     .then(() => {
       return sql.query`SELECT AdminId FROM Admins WHERE username = ${username} AND password = ${password}`; // Replace Doctor with the actual table name
     })
@@ -75,12 +73,14 @@ app.post('/AdminLogin', (req, res) => {
     });
 });
 
+
+
+
 app.post('/login', (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
 
-  sql
-    .connect(config)
+  sql.connect(config)
     .then(() => {
       return sql.query`SELECT StaffId FROM Staff WHERE username = ${username} AND password = ${password}`; // Replace Doctor with the actual table name
     })
@@ -102,17 +102,17 @@ app.post('/login', (req, res) => {
     });
 });
 
+
 //patient registration
 app.post('/PatientRegistration', (req, res) => {
   let name = req.body.name;
-  let dateOfBirth = req.body.dateOfBirth;
+  let dateOfBirth =req.body.dateOfBirth;
   let gender = req.body.gender;
   let address = req.body.address;
   let phone = req.body.phone;
   let insurance = req.body.insurance;
 
-  sql
-    .connect(config)
+  sql.connect(config)
     .then(() => {
       return sql.query`INSERT INTO PatientRecords (Name,Dob,Gender,Phone,Address,InsuranceNumber) Values (${name},${dateOfBirth},${gender},${phone},${address},${insurance})`; // Replace Doctor with the actual table name
     })
@@ -136,8 +136,7 @@ app.get('/patients/:patientId', async (req, res) => {
   const patientId = req.params.patientId;
   try {
     const pool = await sql.connect(config);
-    const result = await pool
-      .request()
+    const result = await pool.request()
       .input('patientId', sql.Int, patientId)
       .query('SELECT * FROM PatientRecords WHERE PatientRecordId = @patientId'); // Replace PatientRecords with the actual table name
 
@@ -148,11 +147,10 @@ app.get('/patients/:patientId', async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ error: 'An error occurred while fetching patient details' });
+    res.status(500).json({ error: 'An error occurred while fetching patient details' });
   }
 });
+
 
 // Route to fetch department values
 app.get('/departments', async (req, res) => {
@@ -169,49 +167,53 @@ app.get('/departments', async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ error: 'An error occurred while fetching departments' });
+    res.status(500).json({ error: 'An error occurred while fetching departments' });
   }
 });
 
 app.get('/doctors/:department', async (req, res) => {
+
   const { department } = req.params;
 
   try {
+
     const pool = await sql.connect(config);
 
-    const result = await pool
-      .request()
+    const result = await pool.request()
 
       .input('department', sql.NVarChar, department)
 
-      .query(
-        'SELECT * FROM Doctors WHERE DepartmentId IN (SELECT departmentId FROM Department WHERE departmentname = @department)'
-      );
+      .query('SELECT * FROM Doctors WHERE DepartmentId IN (SELECT departmentId FROM Department WHERE departmentname = @department)');
+
+
+
 
     res.json(result.recordset);
+
   } catch (error) {
+
     console.error(error);
 
     res.status(500).json({ error: 'An error occurred while fetching doctors' });
+
   }
+
 });
+
+
 
 app.post('/appointments', async (req, res) => {
   try {
-    const { patientrecordid, doctorid, date, time } = req.body;
+    const { patientrecordid, doctorid, date, time, paymentid } = req.body;
 
     const pool = await sql.connect(config);
-    const result = await pool
-      .request()
+    const result = await pool.request()
       .input('patientrecordid', sql.Int, patientrecordid) // Assuming patientrecordid is an integer (use the appropriate SQL type)
       .input('doctorid', sql.Int, doctorid) // Assuming doctorid is an integer (use the appropriate SQL type)
       .input('date', sql.Date, date) // Assuming date is a Date object (use the appropriate SQL type)
       .input('time', sql.Time, time) // Assuming time is a string in 'HH:mm:ss' format (use the appropriate SQL type)
-      .query(
-        'INSERT INTO Appointments (PatientRecordId, DoctorId, date, time) VALUES (@patientrecordid, @doctorid, @date, @time)'
-      );
+      .input('paymentId', sql.NVarChar(10), paymentid) // Assuming paymentId is a string with max length 10 (change the length as needed)
+            .query('INSERT INTO Appointments (PatientRecordId, DoctorId, date, paymentId, time ) VALUES (@patientrecordid, @doctorid, @date,@paymentid, @time )');
 
     if (result.rowsAffected[0] === 0) {
       res.send('INSERT Failed');
@@ -223,6 +225,7 @@ app.post('/appointments', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
 
 app.listen(8080, () => {
   console.log('App running');
