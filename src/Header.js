@@ -4,7 +4,7 @@ import './header.css';
 const Header = () => {
   return (
     <header>
-      <nav class="navbar">
+      <nav className="navbar">
         <ul>
           <li>
             <a href="/">Find A Doctor</a>
@@ -20,11 +20,11 @@ const Header = () => {
           </li>
         </ul>
       </nav>
-      <div class="navbar">
-        <div class="logo">
+      <div className="navbar">
+        <div className="logo">
           <img src="/assets/logo.jpg" alt="Your Logo" />
         </div>
-        <div class="nav-links">
+        <div className="nav-links">
           <ul>
             <li>
               <a href="/">Hospitals</a>

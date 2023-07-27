@@ -7,7 +7,7 @@ var cors = require('cors');
 app.use(cors());
 app.use(bodyParser.json());
 const config = {
-  server: 'LAPTOP-9VI64K50SQLEXPRESS',
+  server: 'LAPTOP-9VI64K50\\SQLEXPRESS',
   driver: 'msnodesqlv8',
   database: 'Hospital',
   options: {

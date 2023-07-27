@@ -38,7 +38,6 @@ const AdminPage = () => {
 
   return (
     <div className="admin-page-container">
-      <Header />
       <h1>Admin</h1>
 
       <div className="options-container">
@@ -61,7 +60,6 @@ const AdminPage = () => {
       <button className="logout-btn" onClick={handleLogout}>
         Logout
       </button>
-      <Footer />
     </div>
   );
 };

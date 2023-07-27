@@ -31,8 +31,6 @@ const ManageAppointment = () => {
 
   return (
     <div className="manage-appointment">
-      <Header />
-
       <h1>Manage Appointments</h1>
       <div className="options">
         <button>
@@ -79,7 +77,6 @@ const ManageAppointment = () => {
       ) : (
         <p>No appointments found.</p>
       )}
-      <Footer />
     </div>
   );
 };

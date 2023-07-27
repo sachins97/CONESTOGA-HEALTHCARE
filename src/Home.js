@@ -23,68 +23,69 @@ import ConfirmationPage from './ConfirmationPage';
 
 const Home = () => {
   return (
-    <html>
-      <body>
-        <Header />
-        <main>
-          <div className="content">
-            <h1>CONESTOGA SUPER SPECIALITY HOSPITAL ,WATERLOO</h1>
-            <h2>Get Directions | Contact Us</h2>
-            <button class="buttons">Need Help</button>
-          </div>
-          <div className="hosp">
-            <img src="/assets/hosp.jpg" alt="Your hosp" />
-          </div>
-        </main>
-        <div class="cards">
-          <article class="destCards">
-            <img src="/assets/admin.jpg" alt="" />
-
-            <button class="btn">
-              <Link to="/admin">Admin</Link>
-            </button>
-          </article>
-          <article class="destCards">
-            <img src="/assets/doctor.jpg" alt="" />
-
-            <button class="btn">
-              <Link to="/doctor">Doctor</Link>
-            </button>
-          </article>
-          <article class="destCards">
-            <img src="/assets/staff.jpg" alt="" />
-            <button class="btn">
-              <Link to="/staff">Staff</Link>
-            </button>
-          </article>
+    <div>
+      <main>
+        <div className="content">
+          <h1>CONESTOGA SUPER SPECIALITY HOSPITAL ,WATERLOO</h1>
+          <h2>Get Directions | Contact Us</h2>
+          <button className="buttons">Need Help</button>
         </div>
-        <div class="about">
-          <h3>ABOUT US</h3>
-          <p>
-            Conestoga Super Speciality Hospital, Mohali is a unit of Hometrail
-            Buildtech Pvt. Ltd., offering services across medical disciplines of
-            Neurosciences, Cardiac Sciences, Cancer Care, Orthopaedics,
-            Obstetrics, and Gynaecology among several others. The 200+ bed
-            healthcare facility is equipped with Medical Intensive Care Unit
-            (MICU), Surgical Intensive Care Unit (SICU), Critical Care Unit
-            (CCU), and Cath Labs and Cath Labs. The team of experts understand
-            the health-related problems and offer personalized care to patients.
-            With 83 ICU beds, eight HDU beds, and eight high-end modular
-            Operation Theatres, Max Super Speciality Hospital, Mohali is home to
-            the latest medical technology. And under the guidance of over 80
-            leading doctors and medical experts, and nursing staff of over 350
-            nurses, the entire h...
-          </p>
+        <div className="hosp">
+          <img src="/assets/hosp.jpg" alt="Your hosp" />
         </div>
-        <Footer />
-      </body>
-    </html>
+      </main>
+      <div className="cards">
+        <article className="destCards">
+          <img src="/assets/admin.jpg" alt="" />
+
+          <button className="btn">
+            <Link to="/admin">Admin</Link>
+          </button>
+        </article>
+        <article className="destCards">
+          <img src="/assets/doctor.jpg" alt="" />
+
+          <button className="btn">
+            <Link to="/doctor">Doctor</Link>
+          </button>
+        </article>
+        <article className="destCards">
+          <img src="/assets/staff.jpg" alt="" />
+          <button className="btn">
+            <Link to="/staff">Staff</Link>
+          </button>
+        </article>
+      </div>
+      <div className="about">
+        <h3>ABOUT US</h3>
+        <p>
+          Conestoga Super Speciality Hospital, Mohali is a unit of Hometrail
+          Buildtech Pvt. Ltd., offering services across medical disciplines of
+          Neurosciences, Cardiac Sciences, Cancer Care, Orthopaedics,
+          Obstetrics, and Gynaecology among several others. The 200+ bed
+          healthcare facility is equipped with Medical Intensive Care Unit
+          (MICU), Surgical Intensive Care Unit (SICU), Critical Care Unit (CCU),
+          and Cath Labs and Cath Labs. The team of experts understand the
+          health-related problems and offer personalized care to patients. With
+          83 ICU beds, eight HDU beds, and eight high-end modular Operation
+          Theatres, Max Super Speciality Hospital, Mohali is home to the latest
+          medical technology. And under the guidance of over 80 leading doctors
+          and medical experts, and nursing staff of over 350 nurses, the entire
+          h...
+        </p>
+      </div>
+    </div>
   );
 };
 
 const HomePage = () => {
   return (
+    // <div>
+
+    //   <Outlet />
+    // </div>
     <div>
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/staff/*" element={<StaffLogin />} />
@@ -104,7 +105,7 @@ const HomePage = () => {
         <Route path="/Payment" element={<Payment />} />
         <Route path="/ConfirmationPage" element={<ConfirmationPage />} />
       </Routes>
-      <Outlet />
+      <Footer />
     </div>
   );
 };

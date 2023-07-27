@@ -37,7 +37,7 @@ function StaffLoginPage() {
     <div>
       <Header />
 
-      <form class="login-form">
+      <form className="login-form">
         <h2>Staff Login</h2>
         <div>
           <label htmlFor="username">Username:</label>

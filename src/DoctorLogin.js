@@ -35,9 +35,7 @@ function DoctorLogin() {
 
   return (
     <div>
-      <Header />
-
-      <form class="login-form">
+      <form className="login-form">
         <h2>Doctor Login</h2>
         <div>
           <label htmlFor="username">Username:</label>
@@ -62,7 +60,6 @@ function DoctorLogin() {
         </button>
         {errorMessage && <p>{errorMessage}</p>}
       </form>
-      <Footer />
     </div>
   );
 }

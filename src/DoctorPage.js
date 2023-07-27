@@ -38,7 +38,6 @@ const DoctorPage = () => {
 
   return (
     <div className="doctor-page-container">
-      <Header />
       <h1>Doctor</h1>
 
       <div className="options-container">
@@ -59,7 +58,6 @@ const DoctorPage = () => {
       <button className="logout-btn" onClick={handleLogout}>
         Logout
       </button>
-      <Footer />
     </div>
   );
 };

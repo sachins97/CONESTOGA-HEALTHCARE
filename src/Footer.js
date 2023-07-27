@@ -4,8 +4,8 @@ import './footer.css';
 const Footer = () => {
   return (
     <footer>
-      <div class="row">
-        <div class="footer-col">
+      <div className="row">
+        <div className="footer-col">
           <h4>Company</h4>
           <ul>
             <li>
@@ -19,7 +19,7 @@ const Footer = () => {
             </li>
           </ul>
         </div>
-        <div class="footer-col">
+        <div className="footer-col">
           <h4>Centers of Excellence</h4>
           <ul>
             <li>
@@ -34,7 +34,7 @@ const Footer = () => {
           </ul>
         </div>
 
-        <div class="footer-col">
+        <div className="footer-col">
           <h4>About The Site</h4>
           <ul>
             <li>
@@ -50,7 +50,7 @@ const Footer = () => {
         </div>
       </div>
       <hr />
-      <div class="copy">
+      <div className="copy">
         &copy; 2023 Hospital Management System. All rights reserved.
       </div>
     </footer>

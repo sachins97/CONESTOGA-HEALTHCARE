@@ -36,8 +36,7 @@ function AdminLogin() {
 
   return (
     <div>
-      <Header />
-      <form class="login-form">
+      <form className="login-form">
         <h2>Admin Login</h2>
         <div>
           <label htmlFor="username">Username:</label>
@@ -62,7 +61,6 @@ function AdminLogin() {
         </button>
         {errorMessage && <p>{errorMessage}</p>}
       </form>
-      <Footer />
     </div>
   );
 }
