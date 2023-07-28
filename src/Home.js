@@ -113,6 +113,11 @@ const HomePage = () => {
           
           <Route path="/Payment" element={<Payment />} />
           <Route path="/ConfirmationPage" element={<ConfirmationPage />} />
+
+          {/* Route for the ViewPatientData component */}
+         <Route exact path="/" element={<ViewPatientData/>} />
+          {/* Route for the Prescription component */}
+          <Route path="/Prescription/:patientId" element={<Prescription/>} />
         </Routes>
       </BrowserRouter>
       <Footer />

@@ -1,33 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './StaffScheduling.css';
 
 const StaffScheduling = () => {
-  const [staffList, setStaffList] = useState([
-    {
-      id: 1,
-      name: 'John Doe',
-      role: 'Receptionist',
-      shifts: ['', '', '', '', '', '', ''],
-    },
-    {
-      id: 2,
-      name: 'Jane Smith',
-      role: 'Doctor',
-      shifts: ['', '', '', '', '', '', ''],
-    },
-    {
-      id: 3,
-      name: 'Mike Johnson',
-      role: 'Receptionist',
-      shifts: ['', '', '', '', '', '', ''],
-    },
-    {
-      id: 4,
-      name: 'Emily Brown',
-      role: 'Doctor',
-      shifts: ['', '', '', '', '', '', ''],
-    },
-  ]);
+  const [staffList, setStaffList] = useState([]);
+  const [shiftForm, setShiftForm] = useState({});
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const updateShift = async (value,staffId, date) => {
+    console.log(value, staffId, date)
+    try {
+      const API_URL = 'http://localhost:8080/updateShift'
+      const response = await fetch(`${API_URL}`,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+          {
+            ShiftType: value,
+            staffId: staffId,
+            date: date
+          }
+        ),
+      });
+      const data = await response.json();
+      console.log(data)
+    } catch(err) {
+      console.log(err)
+    }
+  }
+  const fetchData = async () => {
+    try {
+      const API_BASE_URL = 'http://localhost:8080'; // Replace with your API URL
+      const response = await fetch(`${API_BASE_URL}/doctors-and-staff`);
+      const data = await response.json();
+      setStaffList(data);
+
+      // Initialize the shiftForm state with empty shifts for each staff member
+      const shiftFormData = {};
+      data.forEach((staff) => {
+        shiftFormData[staff.StaffId] = {
+          Sunday: '',
+          Monday: '',
+          Tuesday: '',
+          Wednesday: '',
+          Thursday: '',
+          Friday: '',
+          Saturday: '',
+        };
+      });
+      setShiftForm(shiftFormData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   const daysOfWeek = [
     'Sunday',
@@ -38,24 +66,35 @@ const StaffScheduling = () => {
     'Friday',
     'Saturday',
   ];
+
   const currentDate = new Date();
   const currentDayIndex = currentDate.getDay();
   const currentMonth = currentDate.toLocaleString('default', {
     month: 'short',
   });
 
-  const renderShiftOptions = (staffIndex, dayIndex) => {
+  const handleShiftChange = (staffId, day, value) => {
+    // Update the shiftForm state with the new shift value
+    setShiftForm((prevShiftForm) => ({
+      ...prevShiftForm,
+      [staffId]: {
+        ...prevShiftForm[staffId],
+        [day]: value,
+      },
+    }));
+  };
+
+  const renderShiftOptions = (staffId, day) => {
+    // console.log('sssss', staffId)
     const handleShiftChange = (e) => {
-      const updatedStaffList = [...staffList];
-      updatedStaffList[staffIndex].shifts[dayIndex] = e.target.value;
-      setStaffList(updatedStaffList);
+      const { value } = e.target.value;
+      updateShift(e.target.value, staffId, day)
+      // handleShiftChange(staffId, day, value);
+      
     };
 
     return (
-      <select
-        value={staffList[staffIndex].shifts[dayIndex]}
-        onChange={handleShiftChange}
-      >
+      <select value={shiftForm[staffId][day]} onChange={handleShiftChange}>
         <option value="">-</option>
         <option value="Morning">Morning</option>
         <option value="Afternoon">Afternoon</option>
@@ -83,15 +122,13 @@ const StaffScheduling = () => {
           </tr>
         </thead>
         <tbody>
-          {staffList.map((staff, staffIndex) => (
-            <tr key={staff.id}>
-              <td>{staff.id}</td>
-              <td>{staff.name}</td>
-              <td>{staff.role}</td>
-              {staff.shifts.map((shift, dayIndex) => (
-                <td key={dayIndex}>
-                  {renderShiftOptions(staffIndex, dayIndex)}
-                </td>
+          {staffList.map((staff) => (
+            <tr key={staff.StaffId}>
+              <td>{staff.StaffId}</td>
+              <td>{staff.Name}</td>
+              <td>{staff.Role}</td>
+              {daysOfWeek.map((day) => (
+                <td key={day}>{renderShiftOptions(staff.StaffId, day)}</td>
               ))}
             </tr>
           ))}
@@ -100,9 +137,26 @@ const StaffScheduling = () => {
     );
   };
 
-  const handlePublishShifts = () => {
-    // Logic to publish shifts
-    console.log('Shifts Published!');
+  const handlePublishShifts = async () => {
+    try {
+      const API_BASE_URL = 'http://localhost:8080'; // Replace with your API URL
+
+      const response = await fetch(`${API_BASE_URL}/publishshifts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(shiftForm),
+      });
+
+      if (response.status === 200) {
+        console.log('Shifts Published!');
+      } else {
+        console.log('Failed to publish shifts.');
+      }
+    } catch (error) {
+      console.error('An error occurred while publishing shifts.', error);
+    }
   };
 
   return (

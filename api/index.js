@@ -315,6 +315,196 @@ app.delete('/appointments/:id', async (req, res) => {
 });
 
 
+// Fetch patient records from the database for the doctor page
+
+
+app.get('/patientprescription/:patientId', async (req, res) => {
+  const patientId = req.params.patientId;
+  try {
+    // Connect to the database
+    const pool = await sql.connect(config);
+
+    // Query the database to fetch patient data for the given patientId
+    const patientResult = await pool
+      .request()
+      .input('patientId', sql.Int, patientId)
+      .query('SELECT * FROM PatientRecords WHERE PatientRecordId = @patientId');
+
+    // Query the database to fetch prescriptions for the given patientId
+    const prescriptionsResult = await pool
+      .request()
+      .input('patientId', sql.Int, patientId)
+      .query('SELECT * FROM Prescriptions WHERE PatientRecordId = @patientId');
+
+    // Check if patient data is found
+    if (patientResult.recordset.length > 0) {
+      const patientData = patientResult.recordset[0];
+      const prescriptionsData = prescriptionsResult.recordset;
+
+      // Combine patient details and prescriptions data into a single object
+      const patientWithPrescriptions = {
+        ...patientData,
+        prescriptions: prescriptionsData,
+      };
+
+      res.json(patientWithPrescriptions);
+    } else {
+      res.status(404).json({ error: 'Patient ID not found' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching patient details' });
+  }
+});
+
+// Define the API endpoint for adding a new prescription
+app.post('/addprescription', async (req, res) => {
+  try {
+    // Extract prescription data from the request body
+    const { patientId, medication, dosage, frequency } = req.body;
+
+    // Get the current date
+    const currentDate = new Date().toISOString().slice(0, 10); // Format: YYYY-MM-DD
+
+    // Assuming you have the doctor ID available in the 'doctorId' variable
+    const doctorId = req.doctorId; // Replace 'doctorId' with the actual property name containing the doctor ID
+
+    // Connect to the database
+    const pool = await sql.connect(config);
+
+    // Insert the prescription data into the prescription table
+    await pool
+      .request()
+      .input('patientId', sql.Int, parseInt(patientId)) // Parse patientId to an integer
+      .input('medication', sql.NVarChar, medication)
+      .input('dosage', sql.NVarChar, dosage)
+      .input('frequency', sql.NVarChar, frequency)
+      .input('doctorId', sql.Int, doctorId) // Assuming you have the doctor ID available in 'doctorId' variable
+      .input('date', sql.Date, currentDate) // Set the date to the current date
+      .query(
+        'INSERT INTO Prescriptions (PatientRecordId, Medication, Dosage, Frequency, DoctorId, Date) VALUES (@patientId, @medication, @dosage, @frequency, @doctorId, @date)'
+      );
+
+    // Send a success response
+    res.status(201).json({ message: 'Prescription added successfully.' });
+  } catch (error) {
+    console.error('An error occurred while adding prescription.', error);
+    res.status(500).json({ error: 'Failed to add prescription.' });
+  }
+});
+
+
+app.get('/doctors-and-staff', async (req, res) => {
+  try {
+    const pool = await sql.connect(config);
+
+    const result = await pool
+      .request()
+      .query(`
+        SELECT StaffId as StaffId, CONCAT(FirstName, ' ', LastName) AS Name, 'Staff' AS Role
+        FROM Staff
+        
+        UNION
+        
+        SELECT DoctorId as StaffId, Name, 'Doctor' AS Role
+        FROM Doctors
+      `);
+
+    res.json(result.recordset);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching doctors and staff' });
+  }
+});
+
+app.post('/updateShift', async (req, res) => {
+  const { ShiftType, staffId, date } = req.body;
+  console.log(ShiftType,staffId,date)
+  try {
+    const pool = await sql.connect(config);
+    const query = `
+      INSERT INTO Shifts (StaffId, DayOfWeek, ShiftType)
+      VALUES (@StaffId, @date, @ShiftType)
+    `;
+
+    
+      const formattedDate = getFormattedDate(date); // Helper function to format the date
+      await pool.request()
+      .input('ShiftType', ShiftType)
+      .input('date', formattedDate)
+      .input('StaffId', staffId)
+      .query(query)
+      
+
+    
+    
+    res.status(200).json({ message: 'Shifts updated successfully.' });
+  } catch (error) {
+    console.error('Error updating shifts:', error);
+    res.status(500).json({ error: 'Failed to update shifts.' });
+  }
+});
+
+const getFormattedDate = (day) => {
+  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const currentDate = new Date();
+  const currentDayIndex = currentDate.getDay();
+  const targetDayIndex = daysOfWeek.indexOf(day);
+  const daysToAdd = targetDayIndex >= currentDayIndex ? targetDayIndex - currentDayIndex : 7 - currentDayIndex + targetDayIndex;
+  currentDate.setDate(currentDate.getDate() + daysToAdd);
+  return currentDate.toISOString().slice(0, 10);
+};
+
+
+
+app.get('/total_appointments', async (req, res) => {
+  try {
+    const pool = await sql.connect(config);
+    const query = 'SELECT COUNT(AppointmentId) AS total_appointments FROM Appointments';
+    const result = await pool.request().query(query);
+    res.json(result.recordset);
+  } catch (error) {
+    console.error('Error executing the SQL query:', error);
+    res.status(500).json({ error: 'Failed to fetch total appointments' });
+  }
+});
+
+app.get('/male_count', async (req, res) => {
+  try {
+    const pool = await sql.connect(config);
+    const query = "SELECT COUNT(PatientRecordId) AS MALE_COUNT FROM PatientRecords WHERE Gender = 'Male'";
+    const result = await pool.request().query(query);
+    res.json(result.recordset);
+  } catch (error) {
+    console.error('Error executing the SQL query:', error);
+    res.status(500).json({ error: 'Failed to fetch male count' });
+  }
+});
+
+app.get('/female_count', async (req, res) => {
+  try {
+    const pool = await sql.connect(config);
+    const query = "SELECT COUNT(PatientRecordId) AS FEMALE_COUNT FROM PatientRecords WHERE Gender = 'Female'";
+    const result = await pool.request().query(query);
+    res.json(result.recordset);
+  } catch (error) {
+    console.error('Error executing the SQL query:', error);
+    res.status(500).json({ error: 'Failed to fetch female count' });
+  }
+});
+
+app.get('/average_age', async (req, res) => {
+  try {
+    const pool = await sql.connect(config);
+    const query = 'SELECT AVG(DATEDIFF(YEAR, Dob, GETDATE())) AS AverageAge FROM PatientRecords';
+    const result = await pool.request().query(query);
+    res.json(result.recordset);
+  } catch (error) {
+    console.error('Error executing the SQL query:', error);
+    res.status(500).json({ error: 'Failed to fetch average age' });
+  }
+});
+
 
 
 
