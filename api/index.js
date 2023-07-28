@@ -295,7 +295,24 @@ app.put('/appointments/:id', async (req, res) => {
   }
 });
 
+// Delete appointment by ID
+app.delete('/appointments/:id', async (req, res) => {
+  const appointmentId = req.params.id;
 
+  try {
+    const pool = await sql.connect(config);
+
+    await pool
+      .request()
+      .input('appointmentId', sql.Int, appointmentId)
+      .query('DELETE FROM appointments WHERE AppointmentId = @appointmentId');
+
+    res.json({ message: 'Appointment deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while deleting the appointment' });
+  }
+});
 
 
 

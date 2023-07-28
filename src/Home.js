@@ -16,6 +16,7 @@ import ViewPatientData from './ViewPatientData';
 import Prescription from './Prescription';
 import ViewAppointments from './ViewAppointments';
 import UpdateAppointment from './UpdateAppointment';
+import DeleteAppointment from './DeleteAppointment';
 import Payment from './Payment';
 import Header from './Header';
 import Footer from './Footer';
@@ -108,6 +109,7 @@ const HomePage = () => {
           <Route path="/Prescription" element={<Prescription />} />
           <Route path="/ViewAppointments" element={<ViewAppointments />} />
           <Route path="/UpdateAppointment" element={<UpdateAppointment />} />
+          <Route path="/DeleteAppointment" element={<DeleteAppointment />} />
           
           <Route path="/Payment" element={<Payment />} />
           <Route path="/ConfirmationPage" element={<ConfirmationPage />} />

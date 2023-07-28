@@ -55,7 +55,7 @@ class UpdateAppointment extends Component {
       });
       // Optional: Fetch updated appointment details and display them after successful update
       const response = await axios.get(`http://localhost:8080/appointments/${appointmentDetails.AppointmentId}`);
-      this.setState({ appointmentDetails: response.data, newDate: '', newTime: '', error: '' });
+      this.setState({ appointmentDetails: response.data, newDate: '', newTime: '', error: 'Appointment updated successfully' });
     } catch (error) {
       console.error('Error updating appointment:', error);
       this.setState({ error: 'Error updating appointment. Please try again.' });

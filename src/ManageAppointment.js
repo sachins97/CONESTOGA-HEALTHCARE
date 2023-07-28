@@ -38,8 +38,8 @@ const ManageAppointment = () => {
         <Link to="/UpdateAppointment">Update Appointments</Link>
         
         </button>
-        <button onClick={() => console.log('Option 3 clicked')}>
-          Delete Appointment
+        <button>
+        <Link to="/DeleteAppointment">Delete Appointments</Link>
         </button>
       </div>
 
