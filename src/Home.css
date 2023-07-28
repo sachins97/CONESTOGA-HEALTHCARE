@@ -6,7 +6,7 @@ body {
 }
 main {
   display: flex;
-  height: 40vh;
+ 
 }
 .content {
   background-color: #004084;

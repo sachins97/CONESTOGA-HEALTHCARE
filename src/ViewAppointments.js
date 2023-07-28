@@ -1,115 +1,97 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './ViewAppointments.css';
 import { Routes, Route } from 'react-router-dom';
 
 const ViewAppointments = () => {
   const [date, setDate] = useState('');
-  const [department, setDepartment] = useState('');
-  const [doctor, setDoctor] = useState('');
-  const [filteredAppointments, setFilteredAppointments] = useState([]);
+     const [filteredAppointments, setFilteredAppointments] = useState([]);
+    const [department, setDepartment] = useState('');
+     const [selectedDoctorId, setSelectedDoctorId] = useState('');
+     const [doctor, setDoctor] = useState('');
+  const [error, setError] = useState('');
+  const [departments, setDepartments] = useState([]); // Initialize as an empty array
+  const [doctorsByDepartment, setDoctorsByDepartment] = useState({});
+ 
 
-  const appointments = [
-    {
-      id: 1,
-      date: '2023-07-18',
-      department: 'Cardiology',
-      doctor: 'Dr. Smith',
-    },
-    {
-      id: 2,
-      date: '2023-07-19',
-      department: 'Orthopedics',
-      doctor: 'Dr. Johnson',
-    },
-    {
-      id: 3,
-      date: '2023-07-20',
-      department: 'Dermatology',
-      doctor: 'Dr. Brown',
-    },
-    {
-      id: 4,
-      date: '2023-07-20',
-      department: 'Gastroenterology',
-      doctor: 'Dr. Davis',
-    },
-    {
-      id: 5,
-      date: '2023-07-20',
-      department: 'Ophthalmology',
-      doctor: 'Dr. Wilson',
-    },
-    {
-      id: 3,
-      date: '2023-07-20',
-      department: 'Dermatology',
-      doctor: 'Dr. Brown',
-    },
-    {
-      id: 4,
-      date: '2023-07-21',
-      department: 'Gastroenterology',
-      doctor: 'Dr. Davis',
-    },
-    {
-      id: 5,
-      date: '2023-07-22',
-      department: 'Ophthalmology',
-      doctor: 'Dr. Wilson',
-    },
-  ];
+ 
 
-  // List of departments and doctors
-  const departments = [
-    'Cardiology',
-    'Orthopedics',
-    'Dermatology',
-    'Gastroenterology',
-    'Ophthalmology',
-  ];
-  const doctors = [
-    'Dr. Smith',
-    'Dr. Johnson',
-    'Dr. Brown',
-    'Dr. Davis',
-    'Dr. Wilson',
-  ];
+  const handleDoctorChange = (e) => {
+    const selectedDoctorId = e.target.value;
+    setDoctor(selectedDoctorId); // Set the selected doctor ID to the 'doctor' state
+    setSelectedDoctorId(selectedDoctorId); // Set the selected doctor ID to the 'selectedDoctorId' state
+  };
 
-  const handleSearch = (e) => {
+  const handleDepartmentChange = (e) => {
+    const selectedDepartment = e.target.value;
+    setDepartment(selectedDepartment); // Set the selected department to the 'department' state
+    setDoctor('');
+    fetchDoctorsByDepartment(selectedDepartment); // Fetch doctors for the selected department
+  };
+  
+  const fetchDoctorsByDepartment = async (selectedDepartment) => {
+    try {
+      setError('');
+      if (selectedDepartment) {
+        const response = await axios.get(`http://localhost:8080/doctors/${selectedDepartment}`);
+        console.log('Doctors Data:', response.data);
+        
+        setDoctorsByDepartment((prevDoctorsByDept) => ({
+          ...prevDoctorsByDept,
+          [selectedDepartment]: response.data,
+        }));
+      } else {
+        // If no department is selected, clear the doctor list
+        setDoctorsByDepartment({});
+      }
+    } catch (error) {
+      console.error('Error fetching doctors:', error);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch department names from the server when the component mounts
+    const fetchDepartments = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/departments'); // Replace with the actual API endpoint
+        setDepartments(response.data);
+      } catch (error) {
+        console.error('Error fetching departments:', error);
+      }
+    };
+
+    fetchDepartments();
+  }, []);
+
+
+  const handleSearch = async (e) => {
     e.preventDefault();
 
-    // Filter appointments based on search criteria
-    const filtered = appointments.filter((appointment) => {
-      const appointmentDate = new Date(appointment.date);
-      const searchDate = new Date(date);
-
-      // Check if the appointment date matches the search criteria
-      const isDateMatch = date
-        ? appointmentDate.toDateString() === searchDate.toDateString()
-        : true;
-
-      // Check if the department matches the search criteria
-      const isDepartmentMatch = department
-        ? appointment.department.toLowerCase() === department.toLowerCase()
-        : true;
-
-      // Check if the doctor matches the search criteria
-      const isDoctorMatch = doctor
-        ? appointment.doctor.toLowerCase().includes(doctor.toLowerCase())
-        : true;
-
-      // Return true if all search criteria match
-      return isDateMatch && isDepartmentMatch && isDoctorMatch;
-    });
-
-    setFilteredAppointments(filtered);
+    try {
+      setError('');
+      const response = await axios.get('http://localhost:8080/appointments', {
+        params: {
+          date : date,
+          doctorid: selectedDoctorId
+         // You need to define patientIdInput in your component's state
+        },
+      });
+      console.log('Appointments Data:', response.data);
+      setFilteredAppointments(response.data);
+    } catch (error) {
+      console.error('Error fetching appointments:', error);
+      setError('Error fetching appointments. Please try again later.');
+    }
   };
+
+
+
 
   return (
     <div className="view-appointments">
       <h1>View Appointments</h1>
 
-      <form onSubmit={handleSearch}>
+      <form onSubmit={handleSearch} >
         <div className="filters">
           <label htmlFor="date">Date:</label>
           <input
@@ -118,34 +100,38 @@ const ViewAppointments = () => {
             value={date}
             onChange={(e) => setDate(e.target.value)}
           />
+  <label htmlFor="department">Department:</label>
+            <select
+              id="department"
+              value={department}
+              onChange={handleDepartmentChange}
+              required
+            >
+              <option value="">Select Department</option>
+              {departments.map((dept) => (
+                <option value={dept} key={dept}>
+                  {dept}
+                </option>
+              ))}
+            </select>
 
-          <label htmlFor="department">Department:</label>
-          <select
-            id="department"
-            value={department}
-            onChange={(e) => setDepartment(e.target.value)}
-          >
-            <option value="">All</option>
-            {departments.map((dept) => (
-              <option key={dept} value={dept}>
-                {dept}
-              </option>
-            ))}
-          </select>
+            <label htmlFor="doctor">Doctor:</label>
+            <select
+              id="doctor"
+              value={selectedDoctorId} // Use selectedDoctorId instead of doctor
+              onChange={handleDoctorChange} // Use the new handler function
+              required
+              disabled={!department}
+            >
+              <option value="">Select Doctor</option>
+              {department &&
+                doctorsByDepartment[department]?.map((doc) => (
+                  <option value={doc.DoctorId} key={doc.DoctorId}>
+                    {doc.Name}
+                  </option>
+                ))}
+            </select>
 
-          <label htmlFor="doctor">Doctor:</label>
-          <select
-            id="doctor"
-            value={doctor}
-            onChange={(e) => setDoctor(e.target.value)}
-          >
-            <option value="">All</option>
-            {doctors.map((doc) => (
-              <option key={doc} value={doc}>
-                {doc}
-              </option>
-            ))}
-          </select>
 
           <button type="submit">Search</button>
         </div>
@@ -154,20 +140,20 @@ const ViewAppointments = () => {
       <table className="appointment-table">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>AppoitmentID</th>
+            <th>PatientId</th>
             <th>Date</th>
-            <th>Department</th>
-            <th>Doctor</th>
+            <th>Time</th>
           </tr>
         </thead>
         <tbody>
           {filteredAppointments.length > 0 ? (
             filteredAppointments.map((appointment) => (
               <tr key={appointment.id}>
-                <td>{appointment.id}</td>
-                <td>{appointment.date}</td>
-                <td>{appointment.department}</td>
-                <td>{appointment.doctor}</td>
+                <td>{appointment.AppointmentId}</td>
+                <td>{appointment.PatientRecordId}</td>
+                <td>{new Date(appointment.date).toLocaleDateString('en-GB')}</td>
+                <td>{new Date(appointment.time).toLocaleTimeString('en-US')}</td>
               </tr>
             ))
           ) : (

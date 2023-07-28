@@ -215,9 +215,9 @@ const AppointmentForm = () => {
 
   return (
     <div className="container">
-      <Header />
+     
       <main className="main">
-        <div className="form-container">
+        <div className="container">
           <h1 className="heading">Appointment Booking</h1>
           <form className="appointment-form" onSubmit={handleSubmit}>
             {/* Other form inputs (name, email, phone, etc.) as in your original code */}

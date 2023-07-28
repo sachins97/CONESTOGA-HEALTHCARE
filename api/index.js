@@ -227,6 +227,81 @@ app.post('/appointments', async (req, res) => {
 });
 
 
+
+app.get('/appointments', async (req, res) => {
+  console.log('req.query.date:', req.query.date);
+  console.log('req.query.doctorid:', req.query.doctorid);
+
+  let date = req.query.date;
+  let doctorid = req.query.doctorid;
+  // Convert date from 'DD/MM/YYYY' to 'YYYY-MM-DD' format
+  const [day, month, year] = date.split('/');
+  const formattedDate = `${year}-${month}-${day}`;
+  try {
+    const pool = await sql.connect(config);
+
+    const result = await pool.request()
+      .input('doctorid', sql.Int, parseInt(doctorid)) // Convert doctorid to an integer
+      .input('date', sql.Date, new Date(formattedDate)) // Convert date to a Date object
+      .query('SELECT * FROM appointments WHERE date = @date AND doctorId = @doctorid');
+
+    res.json(result.recordset);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching appointments' });
+  }
+});
+
+// Get appointment details by ID
+app.get('/appointments/:id', async (req, res) => {
+  const appointmentId = req.params.id;
+
+  try {
+    const pool = await sql.connect(config);
+
+    const result = await pool.request()
+      .input('appointmentId', sql.Int, appointmentId)
+      .query('SELECT * FROM appointments WHERE AppointmentId = @appointmentId');
+
+    if (result.recordset.length === 0) {
+      return res.status(404).json({ message: 'Appointment not found' });
+    }
+
+    res.json(result.recordset[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching appointment details' });
+  }
+});
+
+// Update appointment details by ID
+app.put('/appointments/:id', async (req, res) => {
+  const appointmentId = req.params.id;
+  const { date, time } = req.body;
+
+  try {
+    const pool = await sql.connect(config);
+
+    await pool.request()
+      .input('appointmentId', sql.Int, appointmentId)
+      .input('date', sql.Date, new Date(date)) // Assuming date is in 'YYYY-MM-DD' format
+      .input('time', sql.NVarChar, time) // Assuming time is in 'HH:mm:ss' format
+      .query('UPDATE appointments SET date = @date, time = @time WHERE AppointmentId = @appointmentId');
+
+    res.json({ message: 'Appointment updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while updating the appointment' });
+  }
+});
+
+
+
+
+
+
+
+
 app.listen(8080, () => {
   console.log('App running');
 });
