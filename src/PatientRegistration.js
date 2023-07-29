@@ -46,7 +46,7 @@ const RegisterPatient = () => {
   return (
     <div>
       <h1>Register Patient</h1>
-      <form onSubmit={handleSubmit}>
+      <form class="form"onSubmit={handleSubmit}>
         <label htmlFor="name">Name:</label>
         <input
           type="text"

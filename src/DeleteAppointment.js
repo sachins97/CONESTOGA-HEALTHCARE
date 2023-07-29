@@ -42,9 +42,9 @@ class DeleteAppointment extends Component {
 
     return (
       <div className="delete-appointment">
-        <h1>Update Appointment</h1>
+        <h1>Delete Appointment</h1>
 
-        <form onSubmit={this.handleSearch}>
+        <form class="form" onSubmit={this.handleSearch}>
           <div className="search-fields">
             <label htmlFor="appointmentIdInput">Appointment ID:</label>
             <input
@@ -60,12 +60,12 @@ class DeleteAppointment extends Component {
         {error && <p className="error">{error}</p>}
 
         {appointmentDetails && (
-          <div className="appointment-details">
+          <div className="appointment">
             <h2>Appointment Details</h2>
             <p>Appointment ID: {appointmentDetails.AppointmentId}</p>
             <p>Date: {appointmentDetails.date.slice(0, 10)}</p>
             <p>Time: {appointmentDetails.time.slice(11, 19)}</p>
-            <button onClick={this.handleDelete}>Delete Appointment</button>
+            <button class="btn"onClick={this.handleDelete}>Delete Appointment</button>
           </div>
         )}
       </div>

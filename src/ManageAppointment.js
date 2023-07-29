@@ -74,7 +74,7 @@ const ManageAppointment = () => {
           </tbody>
         </table>
       ) : (
-        <p>No appointments found.</p>
+        <p></p>
       )}
     </div>
   );

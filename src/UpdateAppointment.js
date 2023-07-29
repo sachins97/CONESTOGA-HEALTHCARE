@@ -66,10 +66,10 @@ class UpdateAppointment extends Component {
     const { appointmentIdInput, appointmentDetails, newDate, newTime, error } = this.state;
 
     return (
-      <div className="update-appointment">
+      <div className="appointment">
         <h1>Update Appointment</h1>
 
-        <form onSubmit={this.handleSearch}>
+        <form class="form" onSubmit={this.handleSearch}>
           <label htmlFor="appointmentId">Appointment ID:</label>
           <input
             type="text"

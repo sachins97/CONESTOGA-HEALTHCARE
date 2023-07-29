@@ -10,12 +10,13 @@ h1 {
   font-size: 32px;
   margin-bottom: 20px;
   font-weight: bold;
+  color: #004084;
 }
 
 .options-container {
   display: flex;
   justify-content: space-between;
-  margin-top: 40px;
+  padding: 40px;
 }
 
 .option {
@@ -36,15 +37,34 @@ p {
   font-size: 16px;
   margin-bottom: 20px;
 }
+.logout-btn{
+  display: flex;
+  justify-content: center;
+  padding: 10px 20px;
+  background-color: #004084;
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  margin: auto;
+  margin-bottom: 10px;
+}
 
 .btn {
+  display: flex;
+  justify-content: center;
   padding: 10px 20px;
-  font-size: 16px;
-  background-color: #007bff;
+  background-color: #004084;
   color: #fff;
+  text-decoration: none;
   border: none;
-  border-radius: 4px;
+  font-size: 20px;
   cursor: pointer;
+}
+.btn a{
+  color: white;
+  text-decoration: none;
 }
 
 .btn:hover {
