@@ -1,0 +1,111 @@
+use Hospital
+
+select * from Admin
+
+INSERT INTO Admin (Username, Password)
+VALUES ('sachin', '123456');
+
+select * from Doctors
+
+select * from PatientRecords
+select * from Staff
+
+select * from Appointments
+
+
+CREATE TABLE Prescriptions (
+  PrescriptionId INT IDENTITY(1, 1) PRIMARY KEY,
+  PatientRecordId INT FOREIGN KEY REFERENCES PatientRecords(PatientRecordId),
+  DoctorId INT FOREIGN KEY REFERENCES Doctors(DoctorId),
+  Date DATE,
+  Diagnosis VARCHAR(100),
+  Medication VARCHAR(100),
+  Dosage VARCHAR(50),
+  Frequency VARCHAR(50)
+);
+
+ 
+
+select * from Admin
+select * from PatientRecords
+select * from Doctors
+
+ 
+
+ 
+
+INSERT INTO Prescriptions (PatientRecordId, DoctorId, Date, Diagnosis, Medication, Dosage, Frequency)
+VALUES (6, 1, '2023-07-26', 'Fever', 'Paracetamol', '500mg', 'Twice a day');
+
+ 
+
+ 
+
+CREATE TABLE Staff (
+    StaffId INT IDENTITY(1,1) PRIMARY KEY,
+    FirstName VARCHAR(50) NULL,
+    LastName VARCHAR(50) NULL,
+    Role VARCHAR(50) NULL,
+    Username VARCHAR(50) NULL,
+    Password VARCHAR(50) NULL
+);
+
+ 
+
+INSERT INTO Staff (FirstName, LastName, Role, Username, Password)
+VALUES
+  ('John', 'Doe', 'Manager', 'john.doe', 'password123'),
+  ('Jane', 'Smith', 'Assistant', 'jane.smith', 'qwerty456'),
+  ('Mike', 'Johnson', 'Clerk', 'mike.johnson', 'secret789');
+
+ 
+
+  select * from Shifts
+  select * from Doctors
+  select  CONCAT(FirstName, ' ', LastName) AS Name, Role from Staff
+  union 
+  select Name, 'Doctor' AS Role from Doctors
+
+ 
+
+  CREATE TABLE Shifts (
+  ShiftId INT PRIMARY KEY IDENTITY(1, 1),
+  StaffId INT NOT NULL,
+  DayOfWeek VARCHAR(10) NOT NULL,
+  ShiftType VARCHAR(20) NOT NULL,
+  CONSTRAINT FK_Shifts_Staff FOREIGN KEY (StaffId) REFERENCES Staff (StaffId)
+);
+select * from Appointments
+
+ 
+
+ 
+
+select count(AppointmentId) as total_appointments from Appointments
+
+ 
+
+select COUNT(PatientRecords.PatientRecordId) as MALE_COUNT from PatientRecords
+where Gender = 'Male'
+select COUNT(PatientRecords.PatientRecordId) as FEMALE_COUNT from PatientRecords
+where Gender = 'Female'
+SELECT AVG(DATEDIFF(YEAR, Dob, GETDATE())) AS AverageAge
+FROM PatientRecords;
+
+ 
+
+ 
+
+-- Inserting 10 appointments with random data for demonstration purposes
+INSERT INTO Appointments (DoctorId, PatientRecordId, date, paymentId, time)
+VALUES
+  (1, 1, '2023-07-26', 'PAY001', '10:00:00'),
+  (2, 1, '2023-07-27', 'PAY002', '11:00:00'),
+  (1, 2, '2023-07-27', 'PAY003', '15:30:00'),
+  (2, 2, '2023-07-28', 'PAY004', '09:45:00'),
+  (1, 3, '2023-07-28', 'PAY005', '14:15:00'),
+  (2, 3, '2023-07-29', 'PAY006', '16:30:00'),
+  (1, 1, '2023-07-30', 'PAY007', '08:00:00'),
+  (2, 1, '2023-07-30', 'PAY008', '09:30:00'),
+  (1, 2, '2023-07-31', 'PAY009', '12:00:00'),
+  (2, 2, '2023-07-31', 'PAY010', '13:30:00');
