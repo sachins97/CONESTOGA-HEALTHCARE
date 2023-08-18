@@ -1,4 +1,6 @@
-use Hospital
+Create database Hospital
+
+User Hospital
 
 select * from Admin
 
